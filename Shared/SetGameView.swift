@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  SetGameView.swift
 //  Shared
 //
 //  Created by Rebecca Nybo on 9/17/20.
@@ -7,15 +7,16 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct SetGameView: View {
+    let title = "Set Go"
     var body: some View {
-        Text("Hello, world!")
+        Text("\(title)")
             .padding()
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct SetGameView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        SetGameView()
     }
 }
