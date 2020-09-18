@@ -15,14 +15,10 @@ struct CardView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.white)
                 RoundedRectangle(cornerRadius: cardCornerRadius).stroke()
+                CardContent(card: card, geometry: geometry)
             }
-            CardContent(card: card)
         }
         .aspectRatio(3/2, contentMode: .fit)
-    }
-    
-    private func systemFont(for size: CGSize) -> Font {
-        return Font.system(size: size.width / 4)
     }
     
     // MARK: - Drawing constants
