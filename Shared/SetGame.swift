@@ -27,6 +27,6 @@ struct SetGame {
                 }
             }
         }
-        return cards
+        return cards.shuffled()
     }
 }

@@ -21,6 +21,7 @@
 		DBEDE06525152CD20051093F /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEDE06325152CC80051093F /* CardView.swift */; };
 		DBEDE06725152FFE0051093F /* CardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEDE06625152FFE0051093F /* CardContent.swift */; };
 		DBFA939E25156C1D00D4FD92 /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFA939D25156C1D00D4FD92 /* CardsView.swift */; };
+		DBFA93A125157E0D00D4FD92 /* Int+toString.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFA93A025157E0D00D4FD92 /* Int+toString.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		DBEDE06325152CC80051093F /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		DBEDE06625152FFE0051093F /* CardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardContent.swift; sourceTree = "<group>"; };
 		DBFA939D25156C1D00D4FD92 /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
+		DBFA93A025157E0D00D4FD92 /* Int+toString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+toString.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 		DBEDE036251412300051093F /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				DBFA939F25157DFA00D4FD92 /* Utils */,
 				DBEDE05A251412650051093F /* View */,
 				DBEDE0592514125D0051093F /* ViewModel */,
 				DBEDE058251412500051093F /* Model */,
@@ -134,6 +137,14 @@
 				DBFA939D25156C1D00D4FD92 /* CardsView.swift */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		DBFA939F25157DFA00D4FD92 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				DBFA93A025157E0D00D4FD92 /* Int+toString.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,6 +247,7 @@
 				DBEDE06425152CC80051093F /* CardView.swift in Sources */,
 				DBEDE06725152FFE0051093F /* CardContent.swift in Sources */,
 				DBEDE06225152C670051093F /* CardProps.swift in Sources */,
+				DBFA93A125157E0D00D4FD92 /* Int+toString.swift in Sources */,
 				DBFA939E25156C1D00D4FD92 /* CardsView.swift in Sources */,
 				DBEDE04C251412330051093F /* SetGameView.swift in Sources */,
 				DBEDE05C251412790051093F /* SetGame.swift in Sources */,
