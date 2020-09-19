@@ -12,6 +12,7 @@ struct Card: Identifiable {
     var shape: ShapeProp
     var pattern: PatternProp
     var number: Int
+    var isSelected: Bool
     var id: Int
     
     init(color: Int, shape: Int, pattern: Int, number: Int) {
@@ -19,6 +20,7 @@ struct Card: Identifiable {
         self.shape = ShapeProp(rawValue: shape)!
         self.pattern = PatternProp(rawValue: pattern)!
         self.number = number + 1
+        isSelected = false
         id = (color * 27) + (shape * 9) + (pattern * 3) + number
     }
 }

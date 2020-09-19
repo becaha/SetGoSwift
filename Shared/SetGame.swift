@@ -9,10 +9,18 @@ import Foundation
 
 struct SetGame {
     var cards: Array<Card>
+    var cardsInPlay: Array<Card>
     var score: Int
+    var cardIndices: Array<Int>
+    
+    let numCards = 12
+    let selectNum = 3
     
     init() {
         cards = SetGame.createSetCards()
+        cardsInPlay = Array(cards[0..<numCards])
+        cards = Array(cards[numCards...])
+        cardIndices = Array<Int>()
         score = 0
     }
     
@@ -28,5 +36,17 @@ struct SetGame {
             }
         }
         return cards.shuffled()
+    }
+    
+    func deal(cardNum: Int) {
+        
+    }
+    
+    mutating func selectCard(at index: Int) {
+        if cardIndices.count == selectNum {
+            cardIndices = Array<Int>()
+        }
+        cardIndices.append(index)
+        cardsInPlay[index].isSelected = true
     }
 }
