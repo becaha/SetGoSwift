@@ -24,7 +24,7 @@ struct SetGameView: View {
                         CardView(card: card)
                             .onTapGesture
                             {
-//                                setGame.choose(card)
+                                setGame.select(card: card)
                             }
                     }
                 }
@@ -34,7 +34,7 @@ struct SetGameView: View {
             
             HStack {
                 Button(action: {
-                    
+                    setGame.newGame()
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: cardCornerRadius)
@@ -50,7 +50,7 @@ struct SetGameView: View {
                 }
                     
                 Button(action: {
-                    setGame.addNextCardsOf(amount: 3)
+                    setGame.deal(cardNum: 3)
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.green)

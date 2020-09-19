@@ -13,15 +13,15 @@ struct SetGame {
     var score: Int
     var cardIndices: Array<Int>
     
-    let numCards = 12
+    let defaultDealNum = 12
     let selectNum = 3
     
     init() {
         cards = SetGame.createSetCards()
-        cardsInPlay = Array(cards[0..<numCards])
-        cards = Array(cards[numCards...])
+        cardsInPlay = Array<Card>()
         cardIndices = Array<Int>()
         score = 0
+        deal(cardNum: defaultDealNum)
     }
     
     private static func createSetCards() -> Array<Card> {
@@ -38,15 +38,31 @@ struct SetGame {
         return cards.shuffled()
     }
     
-    func deal(cardNum: Int) {
-        
+    // TODO: where to deal cards
+    mutating func deal(cardNum: Int) {
+        cardsInPlay.append(contentsOf: cards[0..<cardNum])
+        // removes cardsInPlay from cards
+        cards = Array(cards[cardNum...])
     }
     
+    // TODO: do we want to use indices or isSelected
     mutating func selectCard(at index: Int) {
-        if cardIndices.count == selectNum {
-            cardIndices = Array<Int>()
+        if cardsInPlay[index].isSelected {
+            let success = cardIndices.remove(element: index)
+            if !success {
+                return
+            }
         }
-        cardIndices.append(index)
-        cardsInPlay[index].isSelected = true
+        else {
+            if cardIndices.count == selectNum {
+                for index in cardsInPlay.indices {
+                    cardsInPlay[index].isSelected = false
+                }
+                cardIndices = Array<Int>()
+            }
+            cardIndices.append(index)
+        }
+        cardsInPlay[index].isSelected.toggle()
+        print("select \(cardsInPlay[index].isSelected)")
     }
 }

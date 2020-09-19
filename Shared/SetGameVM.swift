@@ -20,7 +20,7 @@ class SetGameVM: ObservableObject {
     // MARK: - Access to Model
     
     var cardsInPlay: Array<Card> {
-        Array(game.cards[deckIndexStart..<numCards])
+        game.cardsInPlay
     }
     
     var cards: Array<Card> {
@@ -33,7 +33,16 @@ class SetGameVM: ObservableObject {
     
     // MARK: - Intents
     
-    func addNextCardsOf(amount: Int) -> Void {
-//        cardsInPlay.append(contentsOf: game.cards[deckIndexStart..<deckIndexStart + amount])
+    func deal(cardNum: Int) -> Void {
+        game.deal(cardNum: cardNum)
+    }
+    
+    func select(card: Card) {
+        let index = cardsInPlay.indexOf(element: card)!
+        game.selectCard(at: index)
+    }
+    
+    func newGame() {
+        game = SetGameVM.createGame()
     }
 }

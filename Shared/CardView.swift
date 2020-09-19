@@ -14,7 +14,12 @@ struct CardView: View {
         GeometryReader { geometry in
             ZStack {
                 RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.white)
-                RoundedRectangle(cornerRadius: cardCornerRadius).stroke()
+                if card.isSelected {
+                    RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.yellow, lineWidth: 3)
+                }
+                else {
+                    RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.blue, lineWidth: 3)
+                }
                 CardContent(card: card, geometry: geometry)
             }
         }
