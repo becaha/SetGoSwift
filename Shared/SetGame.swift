@@ -40,8 +40,15 @@ struct SetGame {
     
     // TODO: where to deal cards
     mutating func deal(cardNum: Int) {
+        if cards.count == 0 {
+            return
+        }
         cardsInPlay.append(contentsOf: cards[0..<cardNum])
         // removes cardsInPlay from cards
+        if cardNum >= cards.count {
+            cards = Array<Card>()
+            return
+        }
         cards = Array(cards[cardNum...])
     }
     

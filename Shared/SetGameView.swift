@@ -16,7 +16,7 @@ struct SetGameView: View {
         VStack {
             Text("\(title)")
                 .font(.title)
-                .padding()
+                .padding(.top)
             
             GeometryReader { geometry in
                 LazyVGrid(columns: columns(for: geometry.size)) {
@@ -64,20 +64,31 @@ struct SetGameView: View {
                     .aspectRatio(4/2, contentMode: .fit)
                 }
             }
+            .padding(.horizontal)
             
             Spacer()
         }
+        .edgesIgnoringSafeArea(.bottom)
         
     }
     
     private func columns(for size: CGSize) -> [GridItem] {
-        Array(repeating: GridItem(.flexible()), count: Int(size.width / desiredCardWidth))
+        var desiredCardWidth: CGFloat = maxCardWidth
+        if setGame.cardsInPlay.count > minCardsCount {
+            var numCards = setGame.cardsInPlay.count
+            var diff = CGFloat((setGame.cardsInPlay.count - minCardsCount) * (Int(minCardWidth) / (maxCardsCount - minCardsCount)))
+            desiredCardWidth -= CGFloat((setGame.cardsInPlay.count - minCardsCount) * (Int(minCardWidth) / (maxCardsCount - minCardsCount)))
+        }
+        return Array(repeating: GridItem(.flexible()), count: Int(size.width / desiredCardWidth))
     }
     
     // MARK: - Drawing constants
 
     private let cardCornerRadius: CGFloat = 10.0
-    private let desiredCardWidth: CGFloat = 120
+    private let minCardWidth: CGFloat = 60
+    private let maxCardWidth: CGFloat = 120
+    private let maxCardsCount: Int = 81
+    private let minCardsCount: Int = 12
 }
 
 struct SetGameView_Previews: PreviewProvider {
