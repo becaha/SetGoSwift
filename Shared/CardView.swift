@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CardView: View {
     let card: Card
+    let cardRatio: CGFloat
     
     var body: some View {
         GeometryReader { geometry in
@@ -23,7 +24,7 @@ struct CardView: View {
                 CardContent(card: card, geometry: geometry)
             }
         }
-        .aspectRatio(3/2, contentMode: .fit)
+        .aspectRatio(cardRatio, contentMode: .fit)
     }
     
     // MARK: - Drawing constants
@@ -34,6 +35,6 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(card: Card(color: 0, shape: 0, pattern: 0, number: 0)).padding()
+        CardView(card: Card(color: 0, shape: 0, pattern: 0, number: 0), cardRatio: 3/2).padding()
     }
 }
