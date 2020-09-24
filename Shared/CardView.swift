@@ -16,10 +16,21 @@ struct CardView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.white)
                 if card.isSelected {
-                    RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.yellow, lineWidth: 3)
+                    if card.isMatched == true {
+                        RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.green, lineWidth: 3)
+                    }
+                    else if card.isMatched == false {
+                        RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.red, lineWidth: 3)
+                    }
+                    else {
+                        RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.yellow, lineWidth: 3)
+                    }
                 }
                 else {
                     RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.blue, lineWidth: 3)
+                }
+                if card.cheat == true {
+                    RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.orange, lineWidth: 3)
                 }
                 CardContent(card: card, geometry: geometry)
             }

@@ -66,6 +66,21 @@ struct SetGameView: View {
             }
             .padding(.horizontal)
             
+            Button(action: {
+                setGame.cheat()
+            }) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.green)
+                        .padding()
+                    
+                    Text("Cheat")
+                        .font(.headline)
+                        .padding()
+                        .foregroundColor(.black)
+                }
+                .aspectRatio(5/1, contentMode: .fit)
+            }
+            
             Spacer()
         }
         .edgesIgnoringSafeArea(.bottom)

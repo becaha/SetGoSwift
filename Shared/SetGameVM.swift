@@ -11,7 +11,6 @@ class SetGameVM: ObservableObject {
     @Published var game: SetGame = createGame()
     var deckIndexStart = 0
     var numCards = 12
-//    var cardsInPlay = Array<Card>()
     
     private static func createGame() -> SetGame {
         return SetGame()
@@ -37,9 +36,17 @@ class SetGameVM: ObservableObject {
         game.deal(cardNum: cardNum)
     }
     
+    func checkMatch() {
+        game.checkMatch()
+    }
+    
     func select(card: Card) {
         let index = cardsInPlay.indexOf(element: card)!
         game.selectCard(at: index)
+    }
+    
+    func cheat() {
+        game.cheat()
     }
     
     func newGame() {

@@ -13,6 +13,8 @@ struct Card: Identifiable {
     var pattern: PatternProp
     var number: Int
     var isSelected: Bool
+    var isMatched: Bool?
+    var cheat: Bool?
     var id: Int
     
     init(color: Int, shape: Int, pattern: Int, number: Int) {
