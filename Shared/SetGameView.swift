@@ -12,6 +12,17 @@ struct SetGameView: View {
     
     let title = "Set Go"
     
+    func randomLocationOffScreen(for size: CGSize) -> CGSize {
+        var randomSize = CGSize.zero
+        let randomAngle = Double.random(in: 0..<Double.pi * 2)
+        let scaleFactor = max(size.width, size.height) * 1.5
+        
+        randomSize.width = CGFloat(sin(randomAngle)) * scaleFactor
+        randomSize.height = CGFloat(cos(randomAngle)) * scaleFactor
+        
+        return randomSize
+    }
+    
     var body: some View {
         VStack {
             Text("\(title)")
@@ -27,9 +38,19 @@ struct SetGameView: View {
                                 setGame.select(card: card)
                             }
                     }
+//                    .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
                 }
                 .padding()
                 .foregroundColor(.blue)
+//                .onAppear {
+//                    for i in 0..<12 {
+//                        let delay = Double(i) * 0.5
+//
+//                        withAnimation(Animation.easeInOut(duration: 3).delay(delay)) {
+//                            setGame.deal(cardNum: 1)
+//                        }
+//                    }
+//                }
             }
             
             HStack {
@@ -80,6 +101,7 @@ struct SetGameView: View {
                 }
                 .aspectRatio(5/1, contentMode: .fit)
             }
+            .padding(.horizontal)
             
             Spacer()
         }

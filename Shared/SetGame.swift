@@ -139,9 +139,11 @@ struct SetGame {
         var sets = Array<Array<Int>>()
         
         for indexA in 0..<cardsInPlay.count {
-            for indexB in 1..<cardsInPlay.count {
-                for indexC in 2..<cardsInPlay.count {
+            for indexB in indexA + 1..<cardsInPlay.count {
+                for indexC in indexB + 1..<cardsInPlay.count {
                     if checkMatch(withIndices: [indexA, indexB, indexC]) {
+                        print("cheat")
+                        print("\(indexA), \(indexB), \(indexC)")
                         sets.append([indexA, indexB, indexC])
                     }
                 }
