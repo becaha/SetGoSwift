@@ -18,13 +18,16 @@ struct ShapeView<T: Shape>: View {
             shape.stroke(lineWidth: 4)
         }
         .foregroundColor(color)
-        .aspectRatio(contentMode: .fit)
-        .padding(100)
+//        .aspectRatio(contentMode: .fit)
+//        .padding(100)
     }
 }
 
 struct ShapeView_Previews: PreviewProvider {
     static var previews: some View {
-        ShapeView(color: Color.red, opacity: 1.0, shape: OvalShape())
+        GeometryReader { geometry in
+            ShapeView(color: Color.red, opacity: 1.0, shape: DiamondShape())
+                .frame(width: geometry.size.width / 3, height: geometry.size.height)
+        }
     }
 }

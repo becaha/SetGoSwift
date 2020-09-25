@@ -11,23 +11,33 @@ struct CardContent: View {
     let card: Card
     let geometry: GeometryProxy
     
+    
     var body: some View {
 //        Text("\(card.shape.rawValue), \(card.color.rawValue), " +
 //                "\(card.pattern.rawValue), \(card.number)")
 //            .font(systemFont(for: geometry.size))
-
-        VStack {
+        
+        HStack {
             GeometryReader {
                 geometry in
-                VStack {
+                HStack {
                     ForEach(0..<card.number) { _ in
-                        getShapeView()
-                            .padding()
-                            .transition(AnyTransition.offset(CGSize(width: 50, height: 50)))
+                        switch card.shape {
+                        case ShapeProp.oval:
+                            ShapeView<OvalShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+                                .padding()
+                        case ShapeProp.diamond:
+                            ShapeView<DiamondShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+                                .padding()
+                        case ShapeProp.squiggle:
+                            ShapeView<SquiggleShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+                                .padding()
+                        }
                     }
                 }
+                .aspectRatio(contentMode: .fit)
+                .padding(100)
             }
-            
         }
     }
     
@@ -53,16 +63,20 @@ struct CardContent: View {
         }
     }
     
-    func getShapeView() -> some ShapeView {
-        switch card.shape {
-        case ShapeProp.oval:
-            return ShapeView<OvalShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
-        case ShapeProp.diamond:
-            return ShapeView<DiamondShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
-        case ShapeProp.squiggle:
-            return ShapeView<SquiggleShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
-        }
+    func getArray<Element>() -> Array<Element> {
+        return Array<Element>()
     }
+    
+//    func getShapeView() -> some View {
+//        switch card.shape {
+//        case ShapeProp.oval:
+//            return ShapeView<OvalShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+//        case ShapeProp.diamond:
+//            return ShapeView<DiamondShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+//        case ShapeProp.squiggle:
+//            return ShapeView<SquiggleShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+//        }
+//    }
     
     func getShape<T: Shape>() -> T {
         switch card.shape {
@@ -94,7 +108,7 @@ struct CardContent: View {
 struct CardContent_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geometry in
-            CardContent(card: Card(color: 0, shape: 0, pattern: 0, number: 0), geometry: geometry)
+            CardContent(card: Card(color: 0, shape: 1, pattern: 1, number: 1), geometry: geometry)
         }
     }
 }
