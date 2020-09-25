@@ -23,7 +23,8 @@
 		DBFA939E25156C1D00D4FD92 /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFA939D25156C1D00D4FD92 /* CardsView.swift */; };
 		DBFA93A125157E0D00D4FD92 /* Int+toString.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFA93A025157E0D00D4FD92 /* Int+toString.swift */; };
 		DBFA93A3251663E900D4FD92 /* Array+indexOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFA93A2251663E900D4FD92 /* Array+indexOf.swift */; };
-		DBFA93A8251CE19800D4FD92 /* SquiggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFA93A7251CE19800D4FD92 /* SquiggleView.swift */; };
+		DBFA93AE251E37E200D4FD92 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFA93AD251E37E100D4FD92 /* ShapeView.swift */; };
+		DBFA93B0251E403F00D4FD92 /* Shapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFA93AF251E403F00D4FD92 /* Shapes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +45,8 @@
 		DBFA939D25156C1D00D4FD92 /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
 		DBFA93A025157E0D00D4FD92 /* Int+toString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+toString.swift"; sourceTree = "<group>"; };
 		DBFA93A2251663E900D4FD92 /* Array+indexOf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+indexOf.swift"; sourceTree = "<group>"; };
-		DBFA93A7251CE19800D4FD92 /* SquiggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquiggleView.swift; sourceTree = "<group>"; };
+		DBFA93AD251E37E100D4FD92 /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
+		DBFA93AF251E403F00D4FD92 /* Shapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shapes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,7 +141,8 @@
 				DBEDE06325152CC80051093F /* CardView.swift */,
 				DBEDE06625152FFE0051093F /* CardContent.swift */,
 				DBFA939D25156C1D00D4FD92 /* CardsView.swift */,
-				DBFA93A7251CE19800D4FD92 /* SquiggleView.swift */,
+				DBFA93AD251E37E100D4FD92 /* ShapeView.swift */,
+				DBFA93AF251E403F00D4FD92 /* Shapes.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -250,12 +253,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBFA93AE251E37E200D4FD92 /* ShapeView.swift in Sources */,
 				DBFA93A3251663E900D4FD92 /* Array+indexOf.swift in Sources */,
-				DBFA93A8251CE19800D4FD92 /* SquiggleView.swift in Sources */,
 				DBEDE06425152CC80051093F /* CardView.swift in Sources */,
 				DBEDE06725152FFE0051093F /* CardContent.swift in Sources */,
 				DBEDE06225152C670051093F /* CardProps.swift in Sources */,
 				DBFA93A125157E0D00D4FD92 /* Int+toString.swift in Sources */,
+				DBFA93B0251E403F00D4FD92 /* Shapes.swift in Sources */,
 				DBFA939E25156C1D00D4FD92 /* CardsView.swift in Sources */,
 				DBEDE04C251412330051093F /* SetGameView.swift in Sources */,
 				DBEDE05C251412790051093F /* SetGame.swift in Sources */,

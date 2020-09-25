@@ -21,7 +21,7 @@ struct CardContent: View {
                 geometry in
                 VStack {
                     ForEach(0..<card.number) { _ in
-                        SquiggleView(color: getColor(), opacity: getOpacity())
+                        getShapeView()
                             .padding()
                             .transition(AnyTransition.offset(CGSize(width: 50, height: 50)))
                     }
@@ -52,6 +52,39 @@ struct CardContent: View {
             return 0
         }
     }
+    
+    func getShapeView() -> some ShapeView {
+        switch card.shape {
+        case ShapeProp.oval:
+            return ShapeView<OvalShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+        case ShapeProp.diamond:
+            return ShapeView<DiamondShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+        case ShapeProp.squiggle:
+            return ShapeView<SquiggleShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
+        }
+    }
+    
+    func getShape<T: Shape>() -> T {
+        switch card.shape {
+        case ShapeProp.oval:
+            return OvalShape() as! T
+        case ShapeProp.diamond:
+            return DiamondShape() as! T
+        case ShapeProp.squiggle:
+            return SquiggleShape() as! T
+        }
+    }
+//
+//    func getShapeType<T: Shape>() -> T.Type {
+//        switch card.shape {
+//        case ShapeProp.oval:
+//            return OvalShape.self as! T.Type
+//        case ShapeProp.diamond:
+//            return DiamondShape.self as! T.Type
+//        case ShapeProp.squiggle:
+//            return SquiggleShape.self as! T.Type
+//        }
+//    }
     
     private func systemFont(for size: CGSize) -> Font {
         return Font.system(size: size.width / 4)

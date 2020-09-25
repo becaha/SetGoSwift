@@ -14,8 +14,8 @@ enum ColorProp: Int {
 }
 
 enum ShapeProp: Int {
-    case circle
-    case triangle
+    case oval
+    case diamond
     case squiggle
 }
 
