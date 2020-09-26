@@ -8,37 +8,31 @@
 import SwiftUI
 
 struct CardContent: View {
-    let card: Card
     let geometry: GeometryProxy
+    let card: Card
     
     
     var body: some View {
-//        Text("\(card.shape.rawValue), \(card.color.rawValue), " +
-//                "\(card.pattern.rawValue), \(card.number)")
-//            .font(systemFont(for: geometry.size))
         
-        HStack {
-            GeometryReader {
-                geometry in
+        VStack {
+            GeometryReader { geometry in
                 HStack {
                     ForEach(0..<card.number) { _ in
                         switch card.shape {
                         case ShapeProp.oval:
-                            ShapeView<OvalShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
-                                .padding()
+                            ShapeView<OvalShape>(width: geometry.size.width/CGFloat(card.number + 1), color: getColor(), opacity: getOpacity(), shape: getShape())
                         case ShapeProp.diamond:
-                            ShapeView<DiamondShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
-                                .padding()
+                            ShapeView<DiamondShape>(width: geometry.size.width/CGFloat(card.number + 1), color: getColor(), opacity: getOpacity(), shape: getShape())
                         case ShapeProp.squiggle:
-                            ShapeView<SquiggleShape>(color: getColor(), opacity: getOpacity(), shape: getShape())
-                                .padding()
+                            ShapeView<SquiggleShape>(width: geometry.size.width/CGFloat(card.number + 1), color: getColor(), opacity: getOpacity(), shape: getShape())
                         }
                     }
+                    .padding()
                 }
-                .aspectRatio(contentMode: .fit)
-                .padding(100)
             }
+//                .padding(50)
         }
+        .padding()
     }
     
     func getColor() -> Color {
@@ -108,7 +102,17 @@ struct CardContent: View {
 struct CardContent_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geometry in
-            CardContent(card: Card(color: 0, shape: 1, pattern: 1, number: 1), geometry: geometry)
+            ZStack {
+                RoundedRectangle(cornerRadius: 10.0).fill(Color.white)
+                
+                RoundedRectangle(cornerRadius: 10.0).stroke(Color.blue, lineWidth: 3)
+
+                CardContent(geometry: geometry, card: Card(color: 0, shape: 0, pattern: 0, number: 2))
+            }
+            .aspectRatio(3/2, contentMode: .fit)
         }
+        .frame(width: 100, height: 100, alignment: .center)
+        .padding()
     }
+    
 }

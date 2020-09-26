@@ -23,7 +23,7 @@ struct OvalShape: Shape {
         path = path.applying(transform)
 
         return path
-            .offsetBy(dx: (rect.minX - path.boundingRect.minX), dy: (rect.midY - path.boundingRect.midY))
+            .offsetBy(dx: ((rect.minX - path.boundingRect.minX + rect.width - path.boundingRect.width) / 2), dy: 0)
     }
 }
 
@@ -43,45 +43,49 @@ struct DiamondShape: Shape {
         path = path.applying(transform)
 
         return path
-            .offsetBy(dx: (rect.minX - path.boundingRect.minX), dy: (rect.midY - path.boundingRect.midY))
-//        return path.offsetBy(dx: (rect.minX - path.boundingRect.minX + rect.width) / 2, dy: (rect.midY - path.boundingRect.midY))
+            .offsetBy(dx: ((rect.minX - path.boundingRect.minX + rect.width - path.boundingRect.width) / 2), dy: 0)
     }
 }
 
 struct SquiggleShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        path.move(to: CGPoint(x: 1040 - 46, y: 150 - 69))
-        path.addCurve(to: CGPoint(x: 630 - 46, y: 540 - 69), control1: CGPoint(x: 1124 - 46, y: 369 - 69), control2: CGPoint(x: 897 - 46, y: 608 - 69))
+        path.move(to: CGPoint(x: 81, y: 994))
+        path.addCurve(to: CGPoint(x: 471, y: 584), control1: CGPoint(x: 300, y: 1078), control2: CGPoint(x: 551, y: 851))
 
-        path.addCurve(to: CGPoint(x: 270 - 46, y: 530 - 69), control1: CGPoint(x: 523 - 46, y: 513 - 69), control2: CGPoint(x: 422 - 46, y: 420 - 69))
+        path.addCurve(to: CGPoint(x: 461, y: 224), control1: CGPoint(x: 444, y: 477), control2: CGPoint(x: 351, y: 376))
+//
+        path.addCurve(to: CGPoint(x: 331, y: 4), control1: CGPoint(x: 587, y: 50), control2: CGPoint(x: 514, y: 8))
 
-        path.addCurve(to: CGPoint(x: 50 - 46, y: 400 - 69), control1: CGPoint(x: 96 - 46, y: 656 - 69), control2: CGPoint(x: 54 - 46, y: 583 - 69))
+        path.addCurve(to: CGPoint(x: 51, y: 314), control1: CGPoint(x: 151, y: 0), control2: CGPoint(x: 28, y: 145))
 
-        path.addCurve(to: CGPoint(x: 360 - 46, y: 120 - 69), control1: CGPoint(x: 46 - 46, y: 220 - 69), control2: CGPoint(x: 191 - 46, y: 97 - 69))
+        path.addCurve(to: CGPoint(x: 71, y: 844), control1: CGPoint(x: 83, y: 546), control2: CGPoint(x: 246, y: 573))
 
-        path.addCurve(to: CGPoint(x: 890 - 46, y: 140 - 69), control1: CGPoint(x: 59 - 46, y: 152 - 69), control2: CGPoint(x: 619 - 46, y: 315 - 69))
-
-        path.addCurve(to: CGPoint(x: 1040 - 46, y: 150 - 69), control1: CGPoint(x: 953 - 46, y: 100 - 69), control2: CGPoint(x: 1009 - 46, y: 69 - 69))
+        path.addCurve(to: CGPoint(x: 81, y: 994), control1: CGPoint(x: 31, y: 907), control2: CGPoint(x: 0, y: 963))
         
         let scale: CGFloat = rect.height / path.boundingRect.height
         
-        let transform = CGAffineTransform(scaleX: scale, y: scale).rotated(by: CGFloat.pi / 2)
+        let transform = CGAffineTransform(scaleX: scale, y: scale)
         
         path = path.applying(transform)
         
-//        return path
-//            .offsetBy(dx: (rect.minX - path.boundingRect.minX), dy: (rect.midY - path.boundingRect.midY))
-        return path.offsetBy(dx: (rect.minX - path.boundingRect.minX + rect.width) / 2, dy: (rect.midY - path.boundingRect.midY))
+        return path
+            .offsetBy(dx: ((rect.minX - path.boundingRect.minX + rect.width - path.boundingRect.width) / 2), dy: 0)
     }
 }
 
 struct Shape_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
-            DiamondShape()
-            SquiggleShape()
-            OvalShape()
+//            DiamondShape().background(Color.red)
+//            SquiggleShape().background(Color.green)
+            OvalShape().background(Color.yellow)
+                .aspectRatio(3/5, contentMode: .fit)
+                .frame(width: 100, height: 100, alignment: .center)
+
+            Circle().background(Color.purple)
+                .aspectRatio(3/5, contentMode: .fit)
+
         }
         .background(Color.blue)
         .aspectRatio(contentMode: .fit)

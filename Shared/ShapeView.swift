@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ShapeView<T: Shape>: View {
+    let width: CGFloat
     let color: Color
     let opacity: Double
     let shape: T
@@ -18,16 +19,15 @@ struct ShapeView<T: Shape>: View {
             shape.stroke(lineWidth: 4)
         }
         .foregroundColor(color)
-//        .aspectRatio(contentMode: .fit)
-//        .padding(100)
+//        .frame(width: width)
+        .aspectRatio(3/2, contentMode: .fit)
     }
 }
 
 struct ShapeView_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geometry in
-            ShapeView(color: Color.red, opacity: 1.0, shape: DiamondShape())
-                .frame(width: geometry.size.width / 3, height: geometry.size.height)
+            ShapeView(width: 100.0, color: Color.red, opacity: 1.0, shape: SquiggleShape())
         }
     }
 }

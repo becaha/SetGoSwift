@@ -32,7 +32,7 @@ struct CardView: View {
                 if card.cheat == true {
                     RoundedRectangle(cornerRadius: cardCornerRadius).stroke(Color.orange, lineWidth: 3)
                 }
-                CardContent(card: card, geometry: geometry)
+                CardContent(geometry: geometry, card: card)
             }
         }
         .aspectRatio(cardRatio, contentMode: .fit)
@@ -46,6 +46,9 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(card: Card(color: 0, shape: 0, pattern: 0, number: 0), cardRatio: 3/2).padding()
+        CardView(card: Card(color: 0, shape: 0, pattern: 0, number: 2), cardRatio: 3/2)
+        
+//        .frame(width: 100, height: 100, alignment: .center)
+//        .padding()
     }
 }
