@@ -81,7 +81,6 @@ struct Shape_Previews: PreviewProvider {
 //            SquiggleShape().background(Color.green)
             OvalShape().background(Color.yellow)
                 .aspectRatio(3/5, contentMode: .fit)
-                .frame(width: 100, height: 100, alignment: .center)
 
             Circle().background(Color.purple)
                 .aspectRatio(3/5, contentMode: .fit)

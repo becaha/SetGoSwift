@@ -27,12 +27,11 @@ struct CardContent: View {
                             ShapeView<SquiggleShape>(width: geometry.size.width/CGFloat(card.number + 1), color: getColor(), opacity: getOpacity(), shape: getShape())
                         }
                     }
-                    .padding()
                 }
+                .frame(width: geometry.size.width, height: geometry.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             }
-//                .padding(50)
         }
-        .padding()
+        .padding(.horizontal, 10)
     }
     
     func getColor() -> Color {
@@ -51,7 +50,7 @@ struct CardContent: View {
         case PatternProp.solid:
             return 1.0
         case PatternProp.transparent:
-            return 0.5
+            return 0.3
         case PatternProp.blank:
             return 0
         }
