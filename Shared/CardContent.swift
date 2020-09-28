@@ -15,9 +15,10 @@ struct CardContent: View {
     var body: some View {
         
         VStack {
+            Text("\(card.color.rawValue) \(card.shape.rawValue) \(card.pattern.rawValue) \(card.number)")
             GeometryReader { geometry in
                 HStack {
-                    ForEach(0..<card.number) { _ in
+                    ForEach(0..<(card.number + 1)) { _ in
                         switch card.shape {
                         case ShapeProp.oval:
                             ShapeView<OvalShape>(width: geometry.size.width, color: getColor(), opacity: getOpacity(), shape: getShape())
@@ -106,7 +107,7 @@ struct CardContent_Previews: PreviewProvider {
                 
                 RoundedRectangle(cornerRadius: 10.0).stroke(Color.blue, lineWidth: 3)
 
-                CardContent(geometry: geometry, card: Card(color: 0, shape: 0, pattern: 0, number: 2))
+                CardContent(geometry: geometry, card: Card(color: 1, shape: 0, pattern: 0, number: 1))
             }
             .aspectRatio(3/2, contentMode: .fit)
         }

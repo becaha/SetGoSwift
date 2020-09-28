@@ -119,13 +119,16 @@ struct SetGameView: View {
 //
 //        var totalHeight = CGFloat(numRows) * cardHeight
         var count = 3
-        if setGame.cardsInPlay.count > 60 {
+        if setGame.cardsInPlay.count > 78 {
+            count = 7
+        }
+        else if setGame.cardsInPlay.count > 50 {
             count = 6
         }
-        else if setGame.cardsInPlay.count > 40 {
+        else if setGame.cardsInPlay.count > 32 {
             count = 5
         }
-        else if setGame.cardsInPlay.count > 20 {
+        else if setGame.cardsInPlay.count > 18 {
             count = 4
         }
         

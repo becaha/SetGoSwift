@@ -11,16 +11,18 @@ struct SetGame {
     var cards: Array<Card>
     var cardsInPlay: Array<Card>
     var score: Int
-    var selectedIndices: Array<Int>
+//    var selectedIndices: Array<Int>
+    var selectedNum: Int
     var isMatch: Bool?
     
     let defaultDealNum = 12
-    let selectNum = 3
+    let maxSelectNum = 3
     
     init() {
         cards = SetGame.createSetCards()
         cardsInPlay = Array<Card>()
-        selectedIndices = Array<Int>()
+//        selectedIndices = Array<Int>()
+        selectedNum = 0
         score = 0
         deal(cardNum: defaultDealNum)
     }
@@ -41,16 +43,22 @@ struct SetGame {
     
     // TODO: where to deal cards
     mutating func deal(cardNum: Int) {
-        if cards.count == 0 {
-            return
-        }
         if let isMatch = isMatch, isMatch == true {
-            if (cardNum != 3 || selectedIndices.count != 3) {
+            if (cardNum != 3 || selectedNum != 3) {
                 print("error")
             }
-            for (index, selectedIndex) in selectedIndices.enumerated() {
-                cardsInPlay[selectedIndex] = cards[index]
+            for (index, selectedIndex) in findSelected().enumerated() {
+                if cards.count == 0 {
+                    cardsInPlay.remove(at: selectedIndex)
+                }
+                else {
+                    cardsInPlay[selectedIndex] = cards[index]
+                }
             }
+            resetSelected()
+        }
+        else if cards.count == 0 {
+            return
         }
         else {
             cardsInPlay.append(contentsOf: cards[0..<cardNum])
@@ -63,39 +71,49 @@ struct SetGame {
         cards = Array(cards[cardNum...])
     }
     
+    
     // TODO: do we want to use indices or isSelected
+//    mutating func select(_ card: Card) {
     mutating func selectCard(at index: Int) {
         stopCheating()
-        // reset selection
-        if selectedIndices.count == selectNum {
+        // if selected selectNum (3)
+        if selectedNum == maxSelectNum {
+            // if was a match, deal more cards
+            if let isMatch = isMatch, isMatch == true {
+                deal(cardNum: maxSelectNum)
+            }
+            // reset selected cards
             resetSelected()
         }
+//        if card.isSelected {
         if cardsInPlay[index].isSelected {
-            let success = selectedIndices.remove(element: index)
-            if !success {
-                return
-            }
+//            let success = selectedIndices.remove(element: index)
+            selectedNum -= 1
+//            if !success {
+//                return
+//            }
         }
         else {
-            selectedIndices.append(index)
+//            selectedIndices.append(index)
+            selectedNum += 1
         }
         cardsInPlay[index].isSelected.toggle()
-        if selectedIndices.count == selectNum {
+//        card.isSelected.toggle()
+        if selectedNum == maxSelectNum {
             checkMatch()
         }
+//        print("select \(card.isSelected)")
         print("select \(cardsInPlay[index].isSelected)")
     }
     
     mutating func resetSelected() {
-        if let isMatch = isMatch, isMatch == true {
-            deal(cardNum: selectNum)
-        }
         isMatch = nil
-        for index in selectedIndices {
+        for index in findSelected() {
             cardsInPlay[index].isSelected = false
             cardsInPlay[index].isMatched = nil
         }
-        selectedIndices = Array<Int>()
+//        selectedIndices = Array<Int>()
+        selectedNum = 0
     }
     
     func checkMatch(withIndices indices: Array<Int>) -> Bool {
@@ -107,13 +125,25 @@ struct SetGame {
         && hasMatchingAttribute(attA: cardA.pattern.rawValue, attB: cardB.pattern.rawValue, attC: cardC.pattern.rawValue)
         && hasMatchingAttribute(attA: cardA.shape.rawValue, attB: cardB.shape.rawValue, attC: cardC.shape.rawValue)
             && hasMatchingAttribute(attA: cardA.number, attB: cardB.number, attC: cardC.number) {
+            print("set \(cardA.number), \(cardB.number), \(cardC.number)")
             return true
         }
         return false
     }
     
+    func findSelected() -> Array<Int> {
+        var selectedIndices = Array<Int>()
+        for (index, card) in cardsInPlay.enumerated() {
+            if card.isSelected {
+                selectedIndices.append(index)
+            }
+        }
+        print("selected found \(selectedIndices)")
+        return selectedIndices
+    }
+    
     mutating func checkMatch() {
-        if checkMatch(withIndices: selectedIndices) {
+        if checkMatch(withIndices: findSelected()) {
             isMatch = true
         }
         else {
@@ -123,7 +153,7 @@ struct SetGame {
     }
     
     mutating func setIsMatched() {
-        for selectedIndex in selectedIndices {
+        for selectedIndex in findSelected() {
             cardsInPlay[selectedIndex].isMatched = isMatch
         }
     }

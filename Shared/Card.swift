@@ -21,7 +21,7 @@ struct Card: Identifiable {
         self.color = ColorProp(rawValue: color)!
         self.shape = ShapeProp(rawValue: shape)!
         self.pattern = PatternProp(rawValue: pattern)!
-        self.number = number + 1
+        self.number = number
         isSelected = false
         id = (color * 27) + (shape * 9) + (pattern * 3) + number
     }

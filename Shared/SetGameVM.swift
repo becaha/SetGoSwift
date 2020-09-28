@@ -43,6 +43,7 @@ class SetGameVM: ObservableObject {
     func select(card: Card) {
         let index = cardsInPlay.indexOf(element: card)!
         game.selectCard(at: index)
+//        game.select(card)
     }
     
     func cheat() {

@@ -46,7 +46,7 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(card: Card(color: 0, shape: 0, pattern: 0, number: 2), cardRatio: 3/2)
+        CardView(card: Card(color: 1, shape: 0, pattern: 0, number: 1), cardRatio: 3/2)
         
 //        .frame(width: 100, height: 100, alignment: .center)
 //        .padding()
