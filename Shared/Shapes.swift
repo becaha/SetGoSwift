@@ -80,15 +80,13 @@ struct Shape_Previews: PreviewProvider {
 //            DiamondShape().background(Color.red)
 //            SquiggleShape().background(Color.green)
             OvalShape().background(Color.yellow)
-                .aspectRatio(3/5, contentMode: .fit)
+                .aspectRatio(1/2, contentMode: .fit)
 
             Circle().background(Color.purple)
                 .aspectRatio(3/5, contentMode: .fit)
 
         }
         .background(Color.blue)
-        .aspectRatio(contentMode: .fit)
-        .padding(100)
         
     }
 }

@@ -20,11 +20,11 @@ struct CardContent: View {
                     ForEach(0..<card.number) { _ in
                         switch card.shape {
                         case ShapeProp.oval:
-                            ShapeView<OvalShape>(width: geometry.size.width/CGFloat(card.number + 1), color: getColor(), opacity: getOpacity(), shape: getShape())
+                            ShapeView<OvalShape>(width: geometry.size.width, color: getColor(), opacity: getOpacity(), shape: getShape())
                         case ShapeProp.diamond:
-                            ShapeView<DiamondShape>(width: geometry.size.width/CGFloat(card.number + 1), color: getColor(), opacity: getOpacity(), shape: getShape())
+                            ShapeView<DiamondShape>(width: geometry.size.width, color: getColor(), opacity: getOpacity(), shape: getShape())
                         case ShapeProp.squiggle:
-                            ShapeView<SquiggleShape>(width: geometry.size.width/CGFloat(card.number + 1), color: getColor(), opacity: getOpacity(), shape: getShape())
+                            ShapeView<SquiggleShape>(width: geometry.size.width, color: getColor(), opacity: getOpacity(), shape: getShape())
                         }
                     }
                 }
