@@ -20,10 +20,12 @@ class SetGameVM: ObservableObject {
     
     var cardsInPlay: Array<Card> {
         game.cardsInPlay
+//        (game.cardsInPlay as NSArray) as! Array<Card>
     }
     
     var cards: Array<Card> {
         game.cards
+//        (game.cards as NSArray) as! Array<Card>
     }
     
     var score: String {

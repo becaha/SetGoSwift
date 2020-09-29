@@ -46,7 +46,7 @@ struct SetGameView: View {
 //                    for i in 0..<12 {
 //                        let delay = Double(i) * 0.5
 //
-//                        withAnimation(Animation.easeInOut(duration: 3).delay(delay)) {
+//                        withAnimation(Animation.easeInOut.delay(delay)) {
 //                            setGame.deal(cardNum: 1)
 //                        }
 //                    }

@@ -8,10 +8,11 @@
 import Foundation
 
 struct SetGame {
+//    var cards: NSMutableArray
+//    var cardsInPlay: NSMutableArray
     var cards: Array<Card>
     var cardsInPlay: Array<Card>
     var score: Int
-//    var selectedIndices: Array<Int>
     var selectedNum: Int
     var isMatch: Bool?
     
@@ -20,25 +21,28 @@ struct SetGame {
     
     init() {
         cards = SetGame.createSetCards()
+//        cardsInPlay = NSMutableArray()
         cardsInPlay = Array<Card>()
-//        selectedIndices = Array<Int>()
         selectedNum = 0
         score = 0
         deal(cardNum: defaultDealNum)
     }
     
+//    private static func createSetCards() -> NSMutableArray {
     private static func createSetCards() -> Array<Card> {
+//        var cards = NSMutableArray()
         var cards = Array<Card>()
         for color in 0..<3 {
             for shape in 0..<3 {
                 for pattern in 0..<3 {
                     for number in 0..<3 {
+//                        cards.add(Card(color: color, shape: shape, pattern: pattern, number: number))
                         cards.append(Card(color: color, shape: shape, pattern: pattern, number: number))
                     }
                 }
             }
         }
-        return cards.shuffled()
+        return cards.shuffled() //as! NSMutableArray
     }
     
     // TODO: where to deal cards
@@ -49,6 +53,7 @@ struct SetGame {
             }
             for (index, selectedIndex) in findSelected().enumerated() {
                 if cards.count == 0 {
+//                    cardsInPlay.removeObject(at: selectedIndex)
                     cardsInPlay.remove(at: selectedIndex)
                 }
                 else {
@@ -62,13 +67,16 @@ struct SetGame {
         }
         else {
             cardsInPlay.append(contentsOf: cards[0..<cardNum])
+//            cardsInPlay.addObjects(from: cards.subarray(with: NSRange(0..<cardNum)))
         }
         // removes cardsInPlay from cards
         if cardNum >= cards.count {
+//            cards = NSMutableArray()
             cards = Array<Card>()
             return
         }
         cards = Array(cards[cardNum...])
+//        cards.setArray(cards.subarray(with: NSRange(cardNum...)))
     }
     
     
@@ -87,14 +95,9 @@ struct SetGame {
         }
 //        if card.isSelected {
         if cardsInPlay[index].isSelected {
-//            let success = selectedIndices.remove(element: index)
             selectedNum -= 1
-//            if !success {
-//                return
-//            }
         }
         else {
-//            selectedIndices.append(index)
             selectedNum += 1
         }
         cardsInPlay[index].isSelected.toggle()
@@ -109,17 +112,18 @@ struct SetGame {
     mutating func resetSelected() {
         isMatch = nil
         for index in findSelected() {
+//            (cardsInPlay[index] as! Card).isSelected = false
+//            (cardsInPlay[index] as! Card).isMatched = nil
             cardsInPlay[index].isSelected = false
             cardsInPlay[index].isMatched = nil
         }
-//        selectedIndices = Array<Int>()
         selectedNum = 0
     }
     
     func checkMatch(withIndices indices: Array<Int>) -> Bool {
-        let cardA = cardsInPlay[indices[0]]
-        let cardB = cardsInPlay[indices[1]]
-        let cardC = cardsInPlay[indices[2]]
+        let cardA = cardsInPlay[indices[0]] // as! Card
+        let cardB = cardsInPlay[indices[1]] // as! Card
+        let cardC = cardsInPlay[indices[2]] // as! Card
 
         if hasMatchingAttribute(attA: cardA.color.rawValue, attB: cardB.color.rawValue, attC: cardC.color.rawValue)
         && hasMatchingAttribute(attA: cardA.pattern.rawValue, attB: cardB.pattern.rawValue, attC: cardC.pattern.rawValue)
@@ -134,6 +138,7 @@ struct SetGame {
     func findSelected() -> Array<Int> {
         var selectedIndices = Array<Int>()
         for (index, card) in cardsInPlay.enumerated() {
+//            if (card as! Card).isSelected {
             if card.isSelected {
                 selectedIndices.append(index)
             }
@@ -154,6 +159,7 @@ struct SetGame {
     
     mutating func setIsMatched() {
         for selectedIndex in findSelected() {
+//            (cardsInPlay[selectedIndex] as! Card).isMatched = isMatch
             cardsInPlay[selectedIndex].isMatched = isMatch
         }
     }
@@ -186,6 +192,7 @@ struct SetGame {
         let sets = getSets()
         if sets.count > 0 {
             for index in sets[0] {
+//                (cardsInPlay[index] as! Card).cheat = true
                 cardsInPlay[index].cheat = true
             }
         }
@@ -193,6 +200,7 @@ struct SetGame {
     
     mutating func stopCheating() {
         for (index, _) in cardsInPlay.enumerated() {
+//            (cardsInPlay[index] as! Card).cheat = false
             cardsInPlay[index].cheat = false
         }
     }
