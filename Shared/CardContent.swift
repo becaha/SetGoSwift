@@ -15,7 +15,6 @@ struct CardContent: View {
     var body: some View {
         
         VStack {
-            Text("\(card.color.rawValue) \(card.shape.rawValue) \(card.pattern.rawValue) \(card.number)")
             GeometryReader { geometry in
                 HStack {
                     ForEach(0..<(card.number + 1), id: \.self) { _ in

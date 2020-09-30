@@ -24,7 +24,8 @@ class SetGameVM: ObservableObject {
     }
     
     var cards: Array<Card> {
-        game.cards
+        var gameCards = game.cards
+        return gameCards
 //        (game.cards as NSArray) as! Array<Card>
     }
     

@@ -39,8 +39,9 @@ struct SetGameView: View {
                             {
                                 setGame.select(card: card)
                             }
+                            .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
                     }
-                    .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
+//                    .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
                 }
                 .padding()
                 .foregroundColor(.blue)
@@ -81,6 +82,8 @@ struct SetGameView: View {
                     }
                     .aspectRatio(4/2, contentMode: .fit)
                 }
+                .disabled(setGame.cards.count == 0)
+                .opacity(setGame.cards.count == 0 ? 0.5 : 1)
             }
             .padding(.horizontal)
             
@@ -108,7 +111,7 @@ struct SetGameView: View {
     
     private func dealWithAnimation(numCards: Int) {
         for i in 0..<numCards {
-            let delay = Double(i) * 0.5
+            let delay = Double(i) / 7
             
             withAnimation(Animation.easeInOut.delay(delay)) {
                 setGame.deal(numCards: 1)
