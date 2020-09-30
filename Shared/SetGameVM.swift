@@ -34,8 +34,8 @@ class SetGameVM: ObservableObject {
     
     // MARK: - Intents
     
-    func deal(cardNum: Int) -> Void {
-        game.deal(cardNum: cardNum)
+    func deal(numCards: Int) -> Void {
+        game.deal(cardNum: numCards)
     }
     
     func checkMatch() {
@@ -54,5 +54,6 @@ class SetGameVM: ObservableObject {
     
     func newGame() {
         game = SetGameVM.createGame()
+        let cardsHelp = game.cards
     }
 }

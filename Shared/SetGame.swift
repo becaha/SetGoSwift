@@ -25,7 +25,7 @@ struct SetGame {
         cardsInPlay = Array<Card>()
         selectedNum = 0
         score = 0
-        deal(cardNum: defaultDealNum)
+//        deal(cardNum: defaultDealNum)
     }
     
 //    private static func createSetCards() -> NSMutableArray {
@@ -55,9 +55,13 @@ struct SetGame {
                 if cards.count == 0 {
 //                    cardsInPlay.removeObject(at: selectedIndex)
                     cardsInPlay.remove(at: selectedIndex)
+//                    cardsInPlay[selectedIndex].inPlay = false
                 }
                 else {
                     cardsInPlay[selectedIndex] = cards[index]
+//                    cardsInPlay[selectedIndex].inPlay = false
+//                    cardsInPlay.insert(cards[index], at: selectedIndex + 1)
+//                    cardsInPlay[selectedIndex + 1].inPlay = true
                 }
             }
             resetSelected()
@@ -66,8 +70,8 @@ struct SetGame {
             return
         }
         else {
-            cardsInPlay.append(contentsOf: cards[0..<cardNum])
 //            cardsInPlay.addObjects(from: cards.subarray(with: NSRange(0..<cardNum)))
+            cardsInPlay.append(contentsOf: cards[0..<cardNum])
         }
         // removes cardsInPlay from cards
         if cardNum >= cards.count {

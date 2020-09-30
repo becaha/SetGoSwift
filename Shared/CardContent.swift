@@ -18,7 +18,7 @@ struct CardContent: View {
             Text("\(card.color.rawValue) \(card.shape.rawValue) \(card.pattern.rawValue) \(card.number)")
             GeometryReader { geometry in
                 HStack {
-                    ForEach(0..<(card.number + 1)) { _ in
+                    ForEach(0..<(card.number + 1), id: \.self) { _ in
                         switch card.shape {
                         case ShapeProp.oval:
                             ShapeView<OvalShape>(width: geometry.size.width, color: getColor(), opacity: getOpacity(), shape: getShape())

@@ -33,29 +33,26 @@ struct SetGameView: View {
                 LazyVGrid(columns: columns(for: geometry.size)) {
                     ForEach(setGame.cardsInPlay) { card in
                         CardView(card: card, cardRatio: cardRatio)
+//                            .animation(card.inPlay ?
+//                                        Animation.easeInOut.delay(1) : .default)
                             .onTapGesture
                             {
                                 setGame.select(card: card)
                             }
                     }
-//                    .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
+                    .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
                 }
                 .padding()
                 .foregroundColor(.blue)
-//                .onAppear {
-//                    for i in 0..<12 {
-//                        let delay = Double(i) * 0.5
-//
-//                        withAnimation(Animation.easeInOut.delay(delay)) {
-//                            setGame.deal(cardNum: 1)
-//                        }
-//                    }
-//                }
+                .onAppear {
+                    dealWithAnimation(numCards: defaultDealNum)
+                }
             }
             
             HStack {
                 Button(action: {
                     setGame.newGame()
+                    dealWithAnimation(numCards: defaultDealNum)
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: cardCornerRadius)
@@ -71,7 +68,7 @@ struct SetGameView: View {
                 }
                     
                 Button(action: {
-                    setGame.deal(cardNum: 3)
+                    dealWithAnimation(numCards: 3)
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.green)
@@ -109,6 +106,16 @@ struct SetGameView: View {
         
     }
     
+    private func dealWithAnimation(numCards: Int) {
+        for i in 0..<numCards {
+            let delay = Double(i) * 0.5
+            
+            withAnimation(Animation.easeInOut.delay(delay)) {
+                setGame.deal(numCards: 1)
+            }
+        }
+    }
+    
     private func columns(for size: CGSize) -> [GridItem] {
 //        if setGame.cardsInPlay.count
 //        var numCols = 3
@@ -136,6 +143,8 @@ struct SetGameView: View {
     }
     
     // MARK: - Drawing constants
+    
+    private let defaultDealNum = 12
 
     private let cardRatio: CGFloat = 3/2
     private let cardCornerRadius: CGFloat = 10.0
