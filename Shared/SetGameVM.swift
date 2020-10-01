@@ -20,13 +20,10 @@ class SetGameVM: ObservableObject {
     
     var cardsInPlay: Array<Card> {
         game.cardsInPlay
-//        (game.cardsInPlay as NSArray) as! Array<Card>
     }
     
     var cards: Array<Card> {
-        var gameCards = game.cards
-        return gameCards
-//        (game.cards as NSArray) as! Array<Card>
+        game.cards
     }
     
     var score: String {
@@ -39,6 +36,10 @@ class SetGameVM: ObservableObject {
         game.deal(cardNum: numCards)
     }
     
+    func dealCardsPenalty() {
+        game.dealCardsPenalty()
+    }
+    
     func checkMatch() {
         game.checkMatch()
     }
@@ -46,7 +47,6 @@ class SetGameVM: ObservableObject {
     func select(card: Card) {
         let index = cardsInPlay.indexOf(element: card)!
         game.selectCard(at: index)
-//        game.select(card)
     }
     
     func cheat() {
@@ -55,6 +55,5 @@ class SetGameVM: ObservableObject {
     
     func newGame() {
         game = SetGameVM.createGame()
-        let cardsHelp = game.cards
     }
 }

@@ -26,22 +26,53 @@ struct SetGameView: View {
     var body: some View {
         VStack {
             Text("\(title)")
-                .font(.title)
-                .padding(.top)
+                .font(.system(size: 40))
+            
+            HStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: cardCornerRadius)
+                        .fill(Color.green)
+                    
+                    Text("Score: \(setGame.score)")
+                        .font(.headline)
+                        .padding()
+                        .foregroundColor(.black)
+                }
+                .padding()
+                
+                Button(action: {
+                    withAnimation {
+                        setGame.newGame()
+                    }
+                    dealWithAnimation(numCards: defaultDealNum)
+                }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: cardCornerRadius)
+                            .fill(Color.green)
+                        
+                        Text("New Game")
+                            .font(.headline)
+                            .padding()
+                            .foregroundColor(.black)
+                    }
+                }
+                .padding()
+            }
+            .padding()
+            .frame(height: 60)
             
             GeometryReader { geometry in
                 LazyVGrid(columns: columns(for: geometry.size)) {
                     ForEach(setGame.cardsInPlay) { card in
                         CardView(card: card, cardRatio: cardRatio)
-//                            .animation(card.inPlay ?
-//                                        Animation.easeInOut.delay(1) : .default)
                             .onTapGesture
                             {
-                                setGame.select(card: card)
+                                withAnimation {
+                                    setGame.select(card: card)
+                                }
                             }
                             .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
                     }
-//                    .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
                 }
                 .padding()
                 .foregroundColor(.blue)
@@ -52,56 +83,38 @@ struct SetGameView: View {
             
             HStack {
                 Button(action: {
-                    setGame.newGame()
-                    dealWithAnimation(numCards: defaultDealNum)
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: cardCornerRadius)
-                            .fill(Color.green)
-                            .padding()
-                        
-                        Text("New Game")
-                            .font(.headline)
-                            .padding()
-                            .foregroundColor(.black)
-                    }
-                    .aspectRatio(4/2, contentMode: .fit)
-                }
-                    
-                Button(action: {
+                    setGame.dealCardsPenalty()
                     dealWithAnimation(numCards: 3)
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.green)
-                            .padding()
                         
                         Text("Add 3 Cards")
                             .font(.headline)
                             .padding()
                             .foregroundColor(.black)
                     }
-                    .aspectRatio(4/2, contentMode: .fit)
+                    .padding()
                 }
                 .disabled(setGame.cards.count == 0)
                 .opacity(setGame.cards.count == 0 ? 0.5 : 1)
-            }
-            .padding(.horizontal)
-            
-            Button(action: {
-                setGame.cheat()
-            }) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.green)
-                        .padding()
-                    
-                    Text("Cheat")
-                        .font(.headline)
-                        .padding()
-                        .foregroundColor(.black)
+                
+                Button(action: {
+                    setGame.cheat()
+                }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.green)
+                        
+                        Text("Cheat")
+                            .font(.headline)
+                            .padding()
+                            .foregroundColor(.black)
+                    }
+                    .padding()
                 }
-                .aspectRatio(5/1, contentMode: .fit)
             }
-            .padding(.horizontal)
+            .padding()
+            .frame(height: 90)
             
             Spacer()
         }
