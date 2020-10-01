@@ -27,23 +27,36 @@ struct SetGame {
     }
     
     private static func createSetCards() -> Array<Card> {
+        let numAttributeTypes = 3
         var cards = Array<Card>()
-        for color in 0..<3 {
-            for shape in 0..<3 {
-                for pattern in 0..<3 {
-                    for number in 0..<3 {
+        for color in 0..<numAttributeTypes {
+            for shape in 0..<numAttributeTypes {
+                for pattern in 0..<numAttributeTypes {
+                    for number in 0..<numAttributeTypes {
                         cards.append(Card(color: color, shape: shape, pattern: pattern, number: number))
                     }
                 }
             }
         }
+        cards = Array(cards[0..<20])
         return cards.shuffled()
     }
     
     mutating func removeSelected() {
+        var deckCount = cards.count
+        var deckIndex = 0
         let currentSelected = findSelected()
         for i in 0..<currentSelected.count {
-            cardsInPlay.remove(at: currentSelected[i])
+            let selectedIndex = currentSelected[i]
+            if deckCount == 0 {
+                cardsInPlay.remove(at: selectedIndex)
+            }
+            else {
+                cardsInPlay[selectedIndex] = cards[deckIndex]
+                deckCount -= 1
+                deckIndex += 1
+            }
+            
         }
     }
     
@@ -58,21 +71,8 @@ struct SetGame {
             if (cardNum != 3 || selectedNum != 3) {
                 print("error")
             }
-            // remove/replace selected cards
-            let currentSelected = findSelected()
-            let selectedIndexA = currentSelected[0]
-            let selectedIndexB = currentSelected[1]
-            let selectedIndexC = currentSelected[2]
             
-            if cards.count == 0 {
-                removeSelected()
-            }
-            else {
-                cardsInPlay[selectedIndexA] = cards[0]
-                cardsInPlay[selectedIndexB] = cards[1]
-                cardsInPlay[selectedIndexC] = cards[2]
-            }
-            
+            removeSelected()
             resetSelected()
         }
         else if cards.count == 0 {
@@ -105,6 +105,7 @@ struct SetGame {
             if let isMatch = isMatch, isMatch == true {
                 let selected = findSelected()
                 deal(cardNum: maxSelectNum)
+                checkGameOver()
                 // if selected card is a card in the match, do not select
                 if selected.contains(index) {
                     return
@@ -117,7 +118,6 @@ struct SetGame {
                         }
                     }
                 }
-                checkGameOver()
             }
             // reset selected cards
             resetSelected()

@@ -10,6 +10,8 @@ import SwiftUI
 struct SetGameView: View {
     @ObservedObject var setGame: SetGameVM
     
+    @State private var gameOver = false
+    
     let title = "Set Go"
     
     func randomLocationOffScreen(for size: CGSize) -> CGSize {
@@ -31,6 +33,7 @@ struct SetGameView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
+                
                 Text("\(title)")
                     .font(.system(size: 40))
                     .padding(.top, 10)
@@ -42,6 +45,10 @@ struct SetGameView: View {
                     Rectangle()
                         .fill(playgroundColor)
                         .opacity(playgroundOpacity)
+                    
+                    Rectangle()
+                        .stroke(buttonStrokeColor)
+                        .opacity(0.8)
                     
                     ZStack {
                         VStack {
@@ -56,7 +63,7 @@ struct SetGameView: View {
                                 .padding()
 
                         }
-                        .opacity(setGame.gameOver ? 1 : 0)
+                        .opacity(gameOver ? 1 : 0)
                     
                         GeometryReader { geometry in
                             LazyVGrid(columns: columns(for: geometry.size)) {
@@ -66,6 +73,7 @@ struct SetGameView: View {
                                         {
                                             withAnimation {
                                                 setGame.select(card: card)
+                                                gameOver = setGame.gameOver
                                             }
                                         }
                                         .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
@@ -76,7 +84,7 @@ struct SetGameView: View {
                             .onAppear {
                                 dealWithAnimation(numCards: defaultDealNum)
                             }
-                            .opacity(setGame.gameOver ? 0.05 : 1)
+                            .opacity(gameOver ? 0.05 : 1)
                         }
                     }
                 }
@@ -90,10 +98,11 @@ struct SetGameView: View {
                         Text("Score: \(setGame.score)")
                             .font(.headline)
                             .foregroundColor(.black)
+                            .opacity(gameOver ? 0.05 : 1)
                     }
                 }
                 .frame(height: 60)
-                .opacity(setGame.gameOver ? 0.05 : 1)
+                .opacity(gameOver ? 0.05 : 1)
                 
                 ZStack {
                     Rectangle()
@@ -114,7 +123,7 @@ struct SetGameView: View {
                 .padding(.vertical, 0)
                 .edgesIgnoringSafeArea(.bottom)
                 .frame(height: 90)
-                .opacity(setGame.gameOver ? 0.05 : 1)
+                .opacity(gameOver ? 0.05 : 1)
             }
             .edgesIgnoringSafeArea(.bottom)
         }
@@ -125,6 +134,7 @@ struct SetGameView: View {
             setGame.newGame()
         }
         dealWithAnimation(numCards: defaultDealNum)
+        gameOver = false
     }
     
     private func deal3Cards() {
@@ -203,9 +213,11 @@ struct SetGameView: View {
     private let buttonTextColor = Color.black
     
     private let backgroundColor = Color.blue
-    private let backgroundOpacity = 0.2
+    private let backgroundOpacity = 0.3
+    
     private let sectionColor = Color.blue
-    private let sectionOpacity = 0.2
+    private let sectionOpacity = 0.1
+    
     private let playgroundColor = Color.blue
     private let playgroundOpacity = 0.1
 }
