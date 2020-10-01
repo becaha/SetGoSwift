@@ -92,9 +92,10 @@ struct SetGame {
         if selectedNum == maxSelectNum {
             // if was a match, deal more cards
             if let isMatch = isMatch, isMatch == true {
+                var selected = findSelected()
                 deal(cardNum: maxSelectNum)
                 // if selected card is a card in the match, do not select
-                if findSelected().contains(index) {
+                if selected.contains(index) {
                     return
                 }
             }
