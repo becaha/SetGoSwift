@@ -93,6 +93,10 @@ struct SetGame {
             // if was a match, deal more cards
             if let isMatch = isMatch, isMatch == true {
                 deal(cardNum: maxSelectNum)
+                // if selected card is a card in the match, do not select
+                if findSelected().contains(index) {
+                    return
+                }
             }
             // reset selected cards
             resetSelected()
