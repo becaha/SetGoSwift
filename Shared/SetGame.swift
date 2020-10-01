@@ -13,6 +13,7 @@ struct SetGame {
     var score: Int
     var selectedNum: Int
     var isMatch: Bool?
+    var gameOver: Bool
     
     let defaultDealNum = 12
     let maxSelectNum = 3
@@ -22,6 +23,7 @@ struct SetGame {
         cardsInPlay = Array<Card>()
         selectedNum = 0
         score = 0
+        gameOver = false
     }
     
     private static func createSetCards() -> Array<Card> {
@@ -35,7 +37,7 @@ struct SetGame {
                 }
             }
         }
-        return cards.shuffled() //as! NSMutableArray
+        return cards.shuffled()
     }
     
     mutating func removeSelected() {
@@ -87,6 +89,12 @@ struct SetGame {
         cards = Array(cards[cardNum...])
     }
     
+    mutating func checkGameOver() {
+        if cards.count == 0 && getSets().count == 0 {
+            gameOver = true
+        }
+    }
+    
     
     mutating func selectCard(at index: Int) {
         var selectIndex = index
@@ -109,6 +117,7 @@ struct SetGame {
                         }
                     }
                 }
+                checkGameOver()
             }
             // reset selected cards
             resetSelected()

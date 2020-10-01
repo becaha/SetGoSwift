@@ -30,6 +30,10 @@ class SetGameVM: ObservableObject {
         game.score.toString()
     }
     
+    var gameOver: Bool {
+        game.gameOver
+    }
+    
     // MARK: - Intents
     
     func deal(numCards: Int) -> Void {

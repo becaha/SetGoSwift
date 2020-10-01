@@ -11,42 +11,24 @@ struct CardView: View {
     let card: Card
     let cardRatio: CGFloat
     
-//    init(card: Card, cardRatio: CGFloat) {
-//        self.card = card
-//        self.cardRatio
-//    }
-    
-//    @State private var isSelected = false
-//    @State private var isMatched: Bool? = nil
-//    @State private var cheat: Bool? = nil
-    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                RoundedRectangle(cornerRadius: cardCornerRadius).fill(Color.white)
+                RoundedRectangle(cornerRadius: cardCornerRadius).fill(card.cheat ?? false == true ? Color.orange : Color.white)
+                    .opacity(card.cheat ?? false == true ? 0.3 : 1)
                 RoundedRectangle(cornerRadius: cardCornerRadius).stroke(getColor(), lineWidth: 3)
                 CardContent(geometry: geometry, card: card)
             }
-//            .onAppear() {
-//                setCard()
-//            }
         }
         .aspectRatio(cardRatio, contentMode: .fit)
     }
     
     func getColor() -> Color {
-        if card.cheat == true {
-//        if cheat == true {
-            return Color.orange
-        }
         if card.isSelected {
-//        if isSelected {
             if card.isMatched == true {
-//            if isMatched == true {
                 return Color.green
             }
             else if card.isMatched == false {
-//            else if isMatched == false {
                 return Color.red
             }
             else {
@@ -57,12 +39,6 @@ struct CardView: View {
             return Color.blue
         }
     }
-    
-//    func setCard() {
-//        isSelected = card.isSelected
-//        isMatched = card.isMatched
-//        cheat = card.cheat
-//    }
     
     // MARK: - Drawing constants
     
