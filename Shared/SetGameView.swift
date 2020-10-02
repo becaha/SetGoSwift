@@ -26,106 +26,109 @@ struct SetGameView: View {
     }
     
     var body: some View {
-        ZStack {
-            Rectangle()
-                .fill(backgroundColor)
-                .opacity(backgroundOpacity)
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack {
+        GeometryReader { screenGeometry in
+            ZStack {
+                Rectangle()
+                    .fill(backgroundColor)
+                    .opacity(backgroundOpacity)
+                    .edgesIgnoringSafeArea(.all)
                 
-                Text("\(title)")
-                    .font(.system(size: 40))
-                    .padding(.top, 10)
-                
-                ZStack {
-                    Rectangle()
-                        .fill(Color.white)
+                VStack {
                     
-                    Rectangle()
-                        .fill(playgroundColor)
-                        .opacity(playgroundOpacity)
+                    Text("\(title)")
+                        .font(.system(size: 40))
+                        .padding(.top, 10)
                     
-                    Rectangle()
-                        .stroke(buttonStrokeColor)
-                        .opacity(0.8)
-                    
-                    ZStack {
-                        VStack {
-                            Text("Game Over")
-                                .font(.system(size: 60))
-                            
-                            Text("Final Score: \(setGame.score)")
-                                .font(.system(size: 40))
-                            
-                            GameButton(text: "Play Again", action: newGame)
-                                .frame(height: 60)
-                                .padding()
-
-                        }
-                        .opacity(gameOver ? 1 : 0)
-                    
-                        GeometryReader { geometry in
-                            LazyVGrid(columns: columns(for: geometry.size)) {
-                                ForEach(setGame.cardsInPlay) { card in
-                                    CardView(card: card, cardRatio: cardRatio)
-                                        .onTapGesture
-                                        {
-                                            withAnimation {
-                                                setGame.select(card: card)
-                                                gameOver = setGame.gameOver
-                                            }
-                                        }
-                                        .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
-                                }
-                            }
-                            .padding()
-                            .foregroundColor(.blue)
-                            .onAppear {
-                                dealWithAnimation(numCards: defaultDealNum)
-                            }
-                            .opacity(gameOver ? 0.05 : 1)
-                        }
-                    }
-                }
-                
-                HStack {
                     ZStack {
                         Rectangle()
-                            .fill(sectionColor)
-                            .opacity(sectionOpacity)
+                            .fill(Color.white)
                         
-                        Text("Score: \(setGame.score)")
-                            .font(.headline)
-                            .foregroundColor(.black)
-                            .opacity(gameOver ? 0.05 : 1)
+                        Rectangle()
+                            .fill(playgroundColor)
+                            .opacity(playgroundOpacity)
+                        
+                        Rectangle()
+                            .stroke(buttonStrokeColor)
+                            .opacity(0.8)
+                        
+                        ZStack {
+                            VStack {
+                                Text("Game Over")
+                                    .font(.system(size: 60))
+                                
+                                Text("Final Score: \(setGame.score)")
+                                    .font(.system(size: 40))
+                                
+                                GameButton(text: "Play Again", action: newGame)
+                                    .frame(height: 60)
+                                    .padding()
+
+                            }
+                            .opacity(gameOver ? 1 : 0)
+                        
+                            GeometryReader { geometry in
+                                LazyVGrid(columns: columns(for: geometry.size)) {
+                                    ForEach(setGame.cardsInPlay) { card in
+                                        CardView(card: card, cardRatio: cardRatio)
+                                            .onTapGesture
+                                            {
+                                                withAnimation {
+                                                    setGame.select(card: card)
+                                                    gameOver = setGame.gameOver
+                                                }
+                                            }
+                                            .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
+                                    }
+                                }
+                                .padding()
+                                .foregroundColor(.blue)
+                                .onAppear {
+                                    dealWithAnimation(numCards: defaultDealNum)
+                                }
+                                .opacity(gameOver ? 0.05 : 1)
+                            }
+                        }
                     }
-                }
-                .frame(height: 60)
-                .opacity(gameOver ? 0.05 : 1)
-                
-                ZStack {
-                    Rectangle()
-                        .fill(sectionColor)
-                        .opacity(sectionOpacity)
                     
-                    HStack {
-                        GameButton(text: "New Game", action: newGame)
+                    Group {
+                        HStack {
+                            ZStack {
+                                Rectangle()
+                                    .fill(sectionColor)
+                                    .opacity(sectionOpacity)
+                                
+                                Text("Score: \(setGame.score)")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                            }
+                        }
+                        .frame(height: 60)
                         
-                        GameButton(text: "Deal 3", action: deal3Cards)
-                            .disabled(setGame.cards.count == 0)
-                            .opacity(setGame.cards.count == 0 ? 0.5 : 1)
-                        
-                        GameButton(text: "Cheat", action: setGame.cheat)
+                        ZStack {
+                            Rectangle()
+                                .fill(sectionColor)
+                                .opacity(sectionOpacity)
+                            
+                            HStack {
+                                GameButton(text: "New Game", action: newGame)
+                                
+                                GameButton(text: "Deal 3", action: deal3Cards)
+                                    .disabled(setGame.cards.count == 0)
+                                    .opacity(setGame.cards.count == 0 ? 0.5 : 1)
+                                
+                                GameButton(text: "Cheat", action: setGame.cheat)
+                            }
+                            .padding()
+                        }
+                        .padding(.vertical, 0)
+                        .edgesIgnoringSafeArea(.bottom)
+                        .frame(height: screenGeometry.size.height/10)
+//                        .frame(height: 90)
                     }
-                    .padding()
+                    .opacity(gameOver ? 0.05 : 1)
                 }
-                .padding(.vertical, 0)
                 .edgesIgnoringSafeArea(.bottom)
-                .frame(height: 90)
-                .opacity(gameOver ? 0.05 : 1)
             }
-            .edgesIgnoringSafeArea(.bottom)
         }
     }
     
@@ -183,17 +186,22 @@ struct SetGameView: View {
 //
 //        var totalHeight = CGFloat(numRows) * cardHeight
         var count = 3
-        if setGame.cardsInPlay.count > 72 {
-            count = 7
+        if size.height > size.width {
+            if setGame.cardsInPlay.count > 72 {
+                count = 7
+            }
+            else if setGame.cardsInPlay.count > 50 {
+                count = 6
+            }
+            else if setGame.cardsInPlay.count > 32 {
+                count = 5
+            }
+            else if setGame.cardsInPlay.count > 18 {
+                count = 4
+            }
         }
-        else if setGame.cardsInPlay.count > 50 {
-            count = 6
-        }
-        else if setGame.cardsInPlay.count > 32 {
+        else {
             count = 5
-        }
-        else if setGame.cardsInPlay.count > 18 {
-            count = 4
         }
         
         return Array(repeating: GridItem(.flexible()), count: count)

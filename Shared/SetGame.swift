@@ -45,11 +45,13 @@ struct SetGame {
     mutating func removeSelected() {
         var deckCount = cards.count
         var deckIndex = 0
-        let currentSelected = findSelected()
+        let currentSelected = findSelected(sorted: false)
+        var removed = 0
         for i in 0..<currentSelected.count {
             let selectedIndex = currentSelected[i]
             if deckCount == 0 {
-                cardsInPlay.remove(at: selectedIndex)
+                cardsInPlay.remove(at: selectedIndex - removed)
+                removed += 1
             }
             else {
                 cardsInPlay[selectedIndex] = cards[deckIndex]
@@ -103,20 +105,20 @@ struct SetGame {
         if selectedNum == maxSelectNum {
             // if was a match, deal more cards
             if let isMatch = isMatch, isMatch == true {
-                let selected = findSelected()
+                var numCardsFromDeck = cards.count < 3 ? cards.count : 3
+                let selected = findSelected(sorted: false)
                 deal(cardNum: maxSelectNum)
                 checkGameOver()
                 // if selected card is a card in the match, do not select
                 if selected.contains(index) {
                     return
                 }
-                // fix the index of the selected card only if no more cards in deck
-                else if cards.count == 0 {
-                    for selectedIndex in selected {
-                        if selectIndex > selectedIndex {
-                            selectIndex -= 1
-                        }
+                // fix the index of the selected card only for cards not replaced by cards in deck
+                for selectedIndex in selected {
+                    if index > selectedIndex && numCardsFromDeck <= 0 {
+                        selectIndex -= 1
                     }
+                    numCardsFromDeck -= 1
                 }
             }
             // reset selected cards
@@ -157,16 +159,17 @@ struct SetGame {
         return false
     }
     
-    func findSelected() -> Array<Int> {
+    // if sorted, returns from greatest index to smallest
+    func findSelected(sorted: Bool = true) -> Array<Int> {
         var selectedIndices = Array<Int>()
         for (index, card) in cardsInPlay.enumerated() {
             if card.isSelected {
                 selectedIndices.append(index)
             }
         }
-        return selectedIndices.sorted { (A, B) -> Bool in
+        return sorted ? selectedIndices.sorted { (A, B) -> Bool in
             A > B
-        }
+        } : selectedIndices
     }
     
     mutating func checkMatch() {
