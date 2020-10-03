@@ -37,7 +37,10 @@ struct SetGameView: View {
                     
                     Text("\(title)")
                         .font(.system(size: 40))
-                        .padding(.top, 10)
+                        .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
+                    
+                    Spacer()
+                        .frame(height: screenGeometry.size.height * spacingFactor)
                     
                     ZStack {
                         Rectangle()
@@ -59,15 +62,12 @@ struct SetGameView: View {
                                 Text("Final Score: \(setGame.score)")
                                     .font(.system(size: 40))
                                 
-                                GameButton(text: "Play Again", action: newGame)
-                                    .frame(height: 60)
-                                    .padding()
-
+                                GameButton(text: "Play Again", action: newGame, height: screenGeometry.size.height)
                             }
                             .opacity(gameOver ? 1 : 0)
                         
-                            GeometryReader { geometry in
-                                LazyVGrid(columns: columns(for: geometry.size)) {
+                            GeometryReader { playgroundGeometry in
+                                LazyVGrid(columns: columns(for: playgroundGeometry.size)) {
                                     ForEach(setGame.cardsInPlay) { card in
                                         CardView(card: card, cardRatio: cardRatio)
                                             .onTapGesture
@@ -77,10 +77,11 @@ struct SetGameView: View {
                                                     gameOver = setGame.gameOver
                                                 }
                                             }
-                                            .transition(AnyTransition.offset(randomLocationOffScreen(for: geometry.size)))
+                                            .transition(AnyTransition.offset(randomLocationOffScreen(for: playgroundGeometry.size)))
                                     }
                                 }
                                 .padding()
+                                .frame(height: playgroundGeometry.size.height, alignment: .top)
                                 .foregroundColor(.blue)
                                 .onAppear {
                                     dealWithAnimation(numCards: defaultDealNum)
@@ -102,32 +103,31 @@ struct SetGameView: View {
                                     .foregroundColor(.black)
                             }
                         }
-                        .frame(height: 60)
+                        .frame(height: screenGeometry.size.height * sectionFactorSmall)
                         
-                        ZStack {
-                            Rectangle()
-                                .fill(sectionColor)
-                                .opacity(sectionOpacity)
-                            
-                            HStack {
-                                GameButton(text: "New Game", action: newGame)
+                        GeometryReader { bottomBarGeometry in
+                            ZStack {
+                                Rectangle()
+                                    .fill(sectionColor)
+                                    .opacity(sectionOpacity)
                                 
-                                GameButton(text: "Deal 3", action: deal3Cards)
-                                    .disabled(setGame.cards.count == 0)
-                                    .opacity(setGame.cards.count == 0 ? 0.5 : 1)
-                                
-                                GameButton(text: "Cheat", action: setGame.cheat)
+                                HStack {
+                                    GameButton(text: "New Game", action: newGame, height: bottomBarGeometry.size.height)
+                                    
+                                    GameButton(text: "Deal 3", action: deal3Cards, height: bottomBarGeometry.size.height)
+                                        .disabled(setGame.cards.count == 0)
+                                        .opacity(setGame.cards.count == 0 ? 0.5 : 1)
+                                    
+                                    GameButton(text: "Cheat", action: setGame.cheat, height: bottomBarGeometry.size.height)
+                                }
+                                .padding()
                             }
-                            .padding()
                         }
                         .padding(.vertical, 0)
-                        .edgesIgnoringSafeArea(.bottom)
-                        .frame(height: screenGeometry.size.height/10)
-//                        .frame(height: 90)
+                        .frame(height: screenGeometry.size.height * sectionFactor)
                     }
                     .opacity(gameOver ? 0.05 : 1)
                 }
-                .edgesIgnoringSafeArea(.bottom)
             }
         }
     }
@@ -146,7 +146,7 @@ struct SetGameView: View {
     }
     
     @ViewBuilder
-    func GameButton(text: String, action: @escaping () -> Void) -> some View {
+    func GameButton(text: String, action: @escaping () -> Void, height: CGFloat) -> some View {
         Button(action:
             action
         ) {
@@ -163,6 +163,7 @@ struct SetGameView: View {
                     .padding()
                     .foregroundColor(buttonTextColor)
             }
+            .frame(height: height * 0.5)
         }
     }
     
@@ -177,6 +178,17 @@ struct SetGameView: View {
     }
     
     private func columns(for size: CGSize) -> [GridItem] {
+        let minColumns = 3
+        let maxColumns = 7
+        
+        let height = size.height
+        let width = size.width
+        let area = height * width
+        let cardArea = area/CGFloat(setGame.cardsInPlay.count)
+        let cardWidth = sqrt((2/3) * cardArea)
+        var columns = Int(width / cardWidth)
+        columns = columns < minColumns ? minColumns : columns > maxColumns ? maxColumns : columns
+        
 //        if setGame.cardsInPlay.count
 //        var numCols = 3
 //        var numRows = setGame.cardsInPlay.count / numCols
@@ -185,26 +197,26 @@ struct SetGameView: View {
 //        var cardHeight = cardWidth * CGFloat(1/cardRatio)
 //
 //        var totalHeight = CGFloat(numRows) * cardHeight
-        var count = 3
-        if size.height > size.width {
-            if setGame.cardsInPlay.count > 72 {
-                count = 7
-            }
-            else if setGame.cardsInPlay.count > 50 {
-                count = 6
-            }
-            else if setGame.cardsInPlay.count > 32 {
-                count = 5
-            }
-            else if setGame.cardsInPlay.count > 18 {
-                count = 4
-            }
-        }
-        else {
-            count = 5
-        }
-        
-        return Array(repeating: GridItem(.flexible()), count: count)
+//        var columns = 3
+//        if size.height > size.width {
+//            if setGame.cardsInPlay.count > 72 {
+//                columns = 7
+//            }
+//            else if setGame.cardsInPlay.count > 50 {
+//                columns = 6
+//            }
+//            else if setGame.cardsInPlay.count > 32 {
+//                columns = 5
+//            }
+//            else if setGame.cardsInPlay.count > 18 {
+//                columns = 4
+//            }
+//        }
+//        else {
+//            columns = 5
+//        }
+//
+        return Array(repeating: GridItem(.flexible()), count: columns)
     }
     
     // MARK: - Drawing constants
@@ -228,6 +240,14 @@ struct SetGameView: View {
     
     private let playgroundColor = Color.blue
     private let playgroundOpacity = 0.1
+    
+    private let sectionFactor: CGFloat = 1/10
+    private let sectionFactorSmall: CGFloat = 1/18
+    private let playgroundFactor: CGFloat = 1/2
+    private let paddingFactorLarge: CGFloat = 1/100
+    private let spacingFactor: CGFloat = 1/75
+    private let spacingBottomFactor: CGFloat = 1/25000
+    
 }
 
 struct SetGameView_Previews: PreviewProvider {
