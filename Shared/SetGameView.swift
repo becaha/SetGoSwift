@@ -40,7 +40,7 @@ struct SetGameView: View {
                         .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
                     
                     Spacer()
-                        .frame(height: screenGeometry.size.height * spacingFactor)
+//                        .frame(height: screenGeometry.size.height * spacingFactor)
                     
                     GeometryReader { playgroundGeometry in
 
@@ -64,10 +64,10 @@ struct SetGameView: View {
                                     Text("Final Score: \(setGame.score)")
                                         .font(.system(size: 40))
                                     
-                                    GameButton(text: "Play Again", action: newGame, height: screenGeometry.size.height)
+                                    GameButton(text: "Play Again", action: newGame, height: screenGeometry.size.height * sectionFactor)
                                 }
                                 .opacity(gameOver ? 1 : 0)
-                            
+                                
                                 LazyVGrid(columns: columns(for: playgroundGeometry.size)) {
                                     ForEach(setGame.cardsInPlay) { card in
                                         CardView(card: card, cardRatio: cardRatio)
@@ -91,6 +91,7 @@ struct SetGameView: View {
                             }
                         }
                     }
+                    .layoutPriority(1)
                     
                     Group {
                         HStack {
@@ -104,7 +105,8 @@ struct SetGameView: View {
                                     .foregroundColor(.black)
                             }
                         }
-                        .frame(height: screenGeometry.size.height * sectionFactorSmall)
+                        .frame(minHeight: screenGeometry.size.height * sectionFactorSmall)
+
                         
                         GeometryReader { bottomBarGeometry in
                             ZStack {
@@ -125,7 +127,7 @@ struct SetGameView: View {
                             }
                         }
                         .padding(.vertical, 0)
-                        .frame(height: screenGeometry.size.height * sectionFactor)
+                        .frame(minHeight: screenGeometry.size.height * sectionFactor)
                     }
                     .opacity(gameOver ? 0.05 : 1)
                 }
@@ -154,17 +156,20 @@ struct SetGameView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: cardCornerRadius)
                     .stroke(buttonStrokeColor, lineWidth: buttonStrokeWeight)
+                    .frame(height: height * 0.7)
+
 
                 RoundedRectangle(cornerRadius: cardCornerRadius)
                     .fill(buttonColor)
                     .opacity(buttonOpacity)
+                    .frame(height: height * 0.7)
+
 
                 Text("\(text)")
                     .font(.headline)
                     .padding()
                     .foregroundColor(buttonTextColor)
             }
-            .frame(height: height * 0.5)
         }
     }
     
@@ -180,15 +185,16 @@ struct SetGameView: View {
     
     private func columns(for size: CGSize) -> [GridItem] {
         let minColumns = 3
-        let maxColumns = 7
+        let defaultPadding: CGFloat = 15
+        let defaultCardPaddingFactor: CGFloat = 7/8
         
-        let height = size.height
-        let width = size.width
+        let height = size.height - (defaultPadding * 2)
+        let width = size.width - (defaultPadding * 2)
         let area = height * width
-        let cardArea = area/CGFloat(setGame.cardsInPlay.count)
-        let cardWidth = sqrt((2/3) * cardArea)
-        var columns = Int(width / cardWidth)
-        columns = columns < minColumns ? minColumns : columns > maxColumns ? maxColumns : columns
+        let cardArea = area/CGFloat(setGame.cardsInPlay.count) * (defaultCardPaddingFactor)
+        let cardWidth = sqrt((3/2) * cardArea)
+        var columns = Int(ceil(width / cardWidth))
+        columns = columns < minColumns ? minColumns : columns
         return Array(repeating: GridItem(.flexible()), count: columns)
     }
     
@@ -225,9 +231,7 @@ struct SetGameView: View {
 
 struct SetGameView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            SetGameView(setGame: SetGameVM())
-            SetGameView(setGame: SetGameVM())
-        }
+        SetGameView(setGame: SetGameVM())
+//            .previewLayout(PreviewLayout.fixed(width: 820, height: 414))
     }
 }

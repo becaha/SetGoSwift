@@ -31,8 +31,7 @@ class SetGameVM: ObservableObject {
     }
     
     var gameOver: Bool {
-        var gameover = game.gameOver
-        return gameover
+        game.gameOver
     }
     
     // MARK: - Intents
