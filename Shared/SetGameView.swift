@@ -42,31 +42,32 @@ struct SetGameView: View {
                     Spacer()
                         .frame(height: screenGeometry.size.height * spacingFactor)
                     
-                    ZStack {
-                        Rectangle()
-                            .fill(Color.white)
-                        
-                        Rectangle()
-                            .fill(playgroundColor)
-                            .opacity(playgroundOpacity)
-                        
-                        Rectangle()
-                            .stroke(buttonStrokeColor)
-                            .opacity(0.8)
-                        
+                    GeometryReader { playgroundGeometry in
+
                         ZStack {
-                            VStack {
-                                Text("Game Over")
-                                    .font(.system(size: 60))
-                                
-                                Text("Final Score: \(setGame.score)")
-                                    .font(.system(size: 40))
-                                
-                                GameButton(text: "Play Again", action: newGame, height: screenGeometry.size.height)
-                            }
-                            .opacity(gameOver ? 1 : 0)
-                        
-                            GeometryReader { playgroundGeometry in
+                            Rectangle()
+                                .fill(Color.white)
+                            
+                            Rectangle()
+                                .fill(playgroundColor)
+                                .opacity(playgroundOpacity)
+                            
+                            Rectangle()
+                                .stroke(buttonStrokeColor)
+                                .opacity(0.8)
+                            
+                            ZStack {
+                                VStack {
+                                    Text("Game Over")
+                                        .font(.system(size: 60))
+                                    
+                                    Text("Final Score: \(setGame.score)")
+                                        .font(.system(size: 40))
+                                    
+                                    GameButton(text: "Play Again", action: newGame, height: screenGeometry.size.height)
+                                }
+                                .opacity(gameOver ? 1 : 0)
+                            
                                 LazyVGrid(columns: columns(for: playgroundGeometry.size)) {
                                     ForEach(setGame.cardsInPlay) { card in
                                         CardView(card: card, cardRatio: cardRatio)
@@ -188,34 +189,6 @@ struct SetGameView: View {
         let cardWidth = sqrt((2/3) * cardArea)
         var columns = Int(width / cardWidth)
         columns = columns < minColumns ? minColumns : columns > maxColumns ? maxColumns : columns
-        
-//        if setGame.cardsInPlay.count
-//        var numCols = 3
-//        var numRows = setGame.cardsInPlay.count / numCols
-//
-//        var cardWidth = size.width / CGFloat(numCols)
-//        var cardHeight = cardWidth * CGFloat(1/cardRatio)
-//
-//        var totalHeight = CGFloat(numRows) * cardHeight
-//        var columns = 3
-//        if size.height > size.width {
-//            if setGame.cardsInPlay.count > 72 {
-//                columns = 7
-//            }
-//            else if setGame.cardsInPlay.count > 50 {
-//                columns = 6
-//            }
-//            else if setGame.cardsInPlay.count > 32 {
-//                columns = 5
-//            }
-//            else if setGame.cardsInPlay.count > 18 {
-//                columns = 4
-//            }
-//        }
-//        else {
-//            columns = 5
-//        }
-//
         return Array(repeating: GridItem(.flexible()), count: columns)
     }
     
@@ -252,6 +225,9 @@ struct SetGameView: View {
 
 struct SetGameView_Previews: PreviewProvider {
     static var previews: some View {
-        SetGameView(setGame: SetGameVM())
+        Group {
+            SetGameView(setGame: SetGameVM())
+            SetGameView(setGame: SetGameVM())
+        }
     }
 }
