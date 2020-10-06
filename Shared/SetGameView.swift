@@ -37,19 +37,17 @@ struct SetGameView: View {
                     
                     HStack {
                         ZStack {
-                            ZStack {
-                                Text("\(title)")
-                                    .font(.system(size: screenGeometry.size.height * textFactorMain))
-                                    .frame(width: screenGeometry.size.width, alignment: .center)
-                                
-                                Text("Score: \(setGame.score)")
-                                    .font(.headline)
-                                    .foregroundColor(.black)
-                                    .padding(.horizontal, screenGeometry.size.width * paddingFactor)
-                                    .frame(width: screenGeometry.size.width, alignment: .trailing)
-                            }
-                            .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
+                            Text("\(title)")
+                                .font(.system(size: screenGeometry.size.height * textFactorMain))
+                                .frame(width: screenGeometry.size.width, alignment: .center)
+                            
+                            Text("Score: \(setGame.score)")
+                                .font(.headline)
+                                .foregroundColor(.black)
+                                .padding(.horizontal, screenGeometry.size.width * paddingFactor)
+                                .frame(width: screenGeometry.size.width, alignment: .trailing)
                         }
+                        .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
                         .opacity(gameOver ? 0.05 : 1)
                     }
                     .frame(minHeight: screenGeometry.size.height * sectionFactorSmall)
@@ -175,25 +173,25 @@ struct SetGameView: View {
     }
     
     private func columns(for size: CGSize) -> [GridItem] {
-        let minColumns = 3
+        let minColumns = size.height > size.width ? 3 : 6
         let defaultPadding: CGFloat = 15
         let defaultCardPaddingFactor: CGFloat = 7/8
         
         let height = size.height - (defaultPadding * 2)
         let width = size.width - (defaultPadding * 2)
         let area = height * width
-        let numCards = CGFloat(setGame.cardsInPlay.count)
-        if numCards == 0 {
-            return Array(repeating: GridItem(.flexible()), count: 0)
+        let numCards = setGame.cardsInPlay.count
+        if numCards <= minColumns {
+            return Array(repeating: GridItem(.flexible()), count: minColumns)
         }
-        let cardArea = area/CGFloat(setGame.cardsInPlay.count) * (defaultCardPaddingFactor)
+        let cardArea = area/CGFloat(numCards) * (defaultCardPaddingFactor)
         let cardWidth = sqrt((3/2) * cardArea)
         let cardHeight = sqrt((2/3 * cardArea))
         var columns = Int(ceil(width / cardWidth))
         var cardsFit = false
         columns = columns < minColumns ? minColumns : columns
         while(!cardsFit) {
-            let rows = ceil(Double(setGame.cardsInPlay.count) / Double(columns))
+            let rows = ceil(Double(numCards) / Double(columns))
             if (CGFloat(rows) * cardHeight > height) {
                 columns += 1
             }
