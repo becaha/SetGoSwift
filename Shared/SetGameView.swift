@@ -35,16 +35,8 @@ struct SetGameView: View {
                 
                 VStack {
                     
-//                    Text("\(title)")
-//                        .font(.system(size: screenGeometry.size.height * textFactorMain))
-//                        .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
-                    
                     HStack {
                         ZStack {
-                            Rectangle()
-                                .fill(sectionColor)
-                                .opacity(sectionOpacity)
-                            
                             ZStack {
                                 Text("\(title)")
                                     .font(.system(size: screenGeometry.size.height * textFactorMain))
@@ -59,7 +51,6 @@ struct SetGameView: View {
                             .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
                         }
                         .opacity(gameOver ? 0.05 : 1)
-//                        .frame(minHeight: screenGeometry.size.height * sectionFactorSmall)
                     }
                     .frame(minHeight: screenGeometry.size.height * sectionFactorSmall)
                     
@@ -89,6 +80,7 @@ struct SetGameView: View {
                                         .font(.system(size: 40))
                                     
                                     GameButton(text: "Play Again", action: newGame, height: screenGeometry.size.height * sectionFactor)
+                                        .frame(width: screenGeometry.size.width/2)
                                 }
                                 .opacity(gameOver ? 1 : 0)
                                 
@@ -115,25 +107,16 @@ struct SetGameView: View {
                             }
                         }
                     }
-                    .layoutPriority(1)
+//                    .layoutPriority(1)
+                    
+                    HStack {
+                        GameButton(text: "New Game", action: newGame, height: screenGeometry.size.height * sectionFactor)
                         
-                    GeometryReader { bottomBarGeometry in
-                        ZStack {
-                            Rectangle()
-                                .fill(sectionColor)
-                                .opacity(sectionOpacity)
-                            
-                            HStack {
-                                GameButton(text: "New Game", action: newGame, height: bottomBarGeometry.size.height)
-                                
-                                GameButton(text: "Deal 3", action: deal3Cards, height: bottomBarGeometry.size.height)
-                                    .disabled(setGame.cards.count == 0)
-                                    .opacity(setGame.cards.count == 0 ? 0.5 : 1)
-                                
-                                GameButton(text: "Cheat", action: setGame.cheat, height: bottomBarGeometry.size.height)
-                            }
-                        }
-                        .frame(minHeight: screenGeometry.size.height * sectionFactor)
+                        GameButton(text: "Deal 3", action: deal3Cards, height: screenGeometry.size.height * sectionFactor)
+                            .disabled(setGame.cards.count == 0)
+                            .opacity(setGame.cards.count == 0 ? 0.5 : 1)
+                        
+                        GameButton(text: "Cheat", action: setGame.cheat, height: screenGeometry.size.height * sectionFactor)
                     }
                     .padding(.horizontal, screenGeometry.size.height * paddingFactorLarge)
                     .frame(minHeight: screenGeometry.size.height * sectionFactor)
@@ -199,10 +182,25 @@ struct SetGameView: View {
         let height = size.height - (defaultPadding * 2)
         let width = size.width - (defaultPadding * 2)
         let area = height * width
+        let numCards = CGFloat(setGame.cardsInPlay.count)
+        if numCards == 0 {
+            return Array(repeating: GridItem(.flexible()), count: 0)
+        }
         let cardArea = area/CGFloat(setGame.cardsInPlay.count) * (defaultCardPaddingFactor)
         let cardWidth = sqrt((3/2) * cardArea)
+        let cardHeight = sqrt((2/3 * cardArea))
         var columns = Int(ceil(width / cardWidth))
+        var cardsFit = false
         columns = columns < minColumns ? minColumns : columns
+        while(!cardsFit) {
+            let rows = ceil(Double(setGame.cardsInPlay.count) / Double(columns))
+            if (CGFloat(rows) * cardHeight > height) {
+                columns += 1
+            }
+            else {
+                cardsFit = true
+            }
+        }
         return Array(repeating: GridItem(.flexible()), count: columns)
     }
     
@@ -230,7 +228,7 @@ struct SetGameView: View {
     private let playgroundColor = Color.blue
     private let playgroundOpacity = 0.1
     
-    private let sectionFactor: CGFloat = 1/20
+    private let sectionFactor: CGFloat = 1/12
     private let sectionFactorSmall: CGFloat = 1/18
     private let playgroundFactor: CGFloat = 1/2
     private let paddingFactorLarge: CGFloat = 1/100

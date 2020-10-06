@@ -38,6 +38,7 @@ struct SetGame {
                 }
             }
         }
+        cards = Array(cards[0...10])
         return cards.shuffled()
     }
     
