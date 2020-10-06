@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DBE5F22F252D1F360023B04A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DBE5F22E252D1F360023B04A /* README.md */; };
 		DBEDE04A251412330051093F /* SetGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEDE037251412300051093F /* SetGoApp.swift */; };
 		DBEDE04B251412330051093F /* SetGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEDE037251412300051093F /* SetGoApp.swift */; };
 		DBEDE04C251412330051093F /* SetGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEDE038251412300051093F /* SetGameView.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DBE5F22E252D1F360023B04A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DBEDE037251412300051093F /* SetGoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGoApp.swift; sourceTree = "<group>"; };
 		DBEDE038251412300051093F /* SetGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameView.swift; sourceTree = "<group>"; };
 		DBEDE039251412330051093F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 		DBEDE031251412300051093F = {
 			isa = PBXGroup;
 			children = (
+				DBE5F22E252D1F360023B04A /* README.md */,
 				DBEDE036251412300051093F /* Shared */,
 				DBEDE040251412330051093F /* iOS */,
 				DBEDE047251412330051093F /* macOS */,
@@ -231,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBE5F22F252D1F360023B04A /* README.md in Resources */,
 				DBEDE04E251412330051093F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
