@@ -35,12 +35,36 @@ struct SetGameView: View {
                 
                 VStack {
                     
-                    Text("\(title)")
-                        .font(.system(size: 40))
-                        .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
+//                    Text("\(title)")
+//                        .font(.system(size: screenGeometry.size.height * textFactorMain))
+//                        .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
+                    
+                    HStack {
+                        ZStack {
+                            Rectangle()
+                                .fill(sectionColor)
+                                .opacity(sectionOpacity)
+                            
+                            ZStack {
+                                Text("\(title)")
+                                    .font(.system(size: screenGeometry.size.height * textFactorMain))
+                                    .frame(width: screenGeometry.size.width, alignment: .center)
+                                
+                                Text("Score: \(setGame.score)")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                                    .padding(.horizontal, screenGeometry.size.width * paddingFactor)
+                                    .frame(width: screenGeometry.size.width, alignment: .trailing)
+                            }
+                            .padding(.vertical, screenGeometry.size.height * paddingFactorLarge)
+                        }
+                        .opacity(gameOver ? 0.05 : 1)
+//                        .frame(minHeight: screenGeometry.size.height * sectionFactorSmall)
+                    }
+                    .frame(minHeight: screenGeometry.size.height * sectionFactorSmall)
                     
                     Spacer()
-//                        .frame(height: screenGeometry.size.height * spacingFactor)
+                        .frame(height: screenGeometry.size.height * spacingFactor)
                     
                     GeometryReader { playgroundGeometry in
 
@@ -92,43 +116,27 @@ struct SetGameView: View {
                         }
                     }
                     .layoutPriority(1)
-                    
-                    Group {
-                        HStack {
-                            ZStack {
-                                Rectangle()
-                                    .fill(sectionColor)
-                                    .opacity(sectionOpacity)
-                                
-                                Text("Score: \(setGame.score)")
-                                    .font(.headline)
-                                    .foregroundColor(.black)
-                            }
-                        }
-                        .frame(minHeight: screenGeometry.size.height * sectionFactorSmall)
-
                         
-                        GeometryReader { bottomBarGeometry in
-                            ZStack {
-                                Rectangle()
-                                    .fill(sectionColor)
-                                    .opacity(sectionOpacity)
+                    GeometryReader { bottomBarGeometry in
+                        ZStack {
+                            Rectangle()
+                                .fill(sectionColor)
+                                .opacity(sectionOpacity)
+                            
+                            HStack {
+                                GameButton(text: "New Game", action: newGame, height: bottomBarGeometry.size.height)
                                 
-                                HStack {
-                                    GameButton(text: "New Game", action: newGame, height: bottomBarGeometry.size.height)
-                                    
-                                    GameButton(text: "Deal 3", action: deal3Cards, height: bottomBarGeometry.size.height)
-                                        .disabled(setGame.cards.count == 0)
-                                        .opacity(setGame.cards.count == 0 ? 0.5 : 1)
-                                    
-                                    GameButton(text: "Cheat", action: setGame.cheat, height: bottomBarGeometry.size.height)
-                                }
-                                .padding()
+                                GameButton(text: "Deal 3", action: deal3Cards, height: bottomBarGeometry.size.height)
+                                    .disabled(setGame.cards.count == 0)
+                                    .opacity(setGame.cards.count == 0 ? 0.5 : 1)
+                                
+                                GameButton(text: "Cheat", action: setGame.cheat, height: bottomBarGeometry.size.height)
                             }
                         }
-                        .padding(.vertical, 0)
                         .frame(minHeight: screenGeometry.size.height * sectionFactor)
                     }
+                    .padding(.horizontal, screenGeometry.size.height * paddingFactorLarge)
+                    .frame(minHeight: screenGeometry.size.height * sectionFactor)
                     .opacity(gameOver ? 0.05 : 1)
                 }
             }
@@ -211,6 +219,8 @@ struct SetGameView: View {
     private let buttonStrokeWeight: CGFloat = 2.0
     private let buttonTextColor = Color.black
     
+    private let textFactorMain: CGFloat = 1/20
+    
     private let backgroundColor = Color.blue
     private let backgroundOpacity = 0.3
     
@@ -220,10 +230,11 @@ struct SetGameView: View {
     private let playgroundColor = Color.blue
     private let playgroundOpacity = 0.1
     
-    private let sectionFactor: CGFloat = 1/10
+    private let sectionFactor: CGFloat = 1/20
     private let sectionFactorSmall: CGFloat = 1/18
     private let playgroundFactor: CGFloat = 1/2
     private let paddingFactorLarge: CGFloat = 1/100
+    private let paddingFactor: CGFloat = 1/20
     private let spacingFactor: CGFloat = 1/75
     private let spacingBottomFactor: CGFloat = 1/25000
     
