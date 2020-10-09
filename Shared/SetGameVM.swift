@@ -9,8 +9,6 @@ import Foundation
 
 class SetGameVM: ObservableObject {
     @Published var game: SetGame = createGame()
-    var deckIndexStart = 0
-    var numCards = 12
     
     private static func createGame() -> SetGame {
         return SetGame()
@@ -36,7 +34,7 @@ class SetGameVM: ObservableObject {
     
     // MARK: - Intents
     
-    func deal(numCards: Int) -> Void {
+    func deal(numCards: Int) {
         game.deal(cardNum: numCards)
     }
     

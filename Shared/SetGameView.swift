@@ -12,18 +12,7 @@ struct SetGameView: View {
     
     @State private var gameOver = false
     
-    let title = "Set Go"
-    
-    func randomLocationOffScreen(for size: CGSize) -> CGSize {
-        var randomSize = CGSize.zero
-        let randomAngle = Double.random(in: 0..<Double.pi * 2)
-        let scaleFactor = max(size.width, size.height) * 1.5
-        
-        randomSize.width = CGFloat(sin(randomAngle)) * scaleFactor
-        randomSize.height = CGFloat(cos(randomAngle)) * scaleFactor
-        
-        return randomSize
-    }
+    private let title = "Set Go"
     
     var body: some View {
         GeometryReader { screenGeometry in
@@ -105,7 +94,6 @@ struct SetGameView: View {
                             }
                         }
                     }
-//                    .layoutPriority(1)
                     
                     HStack {
                         GameButton(text: "New Game", action: newGame, height: screenGeometry.size.height * sectionFactor)
@@ -138,7 +126,7 @@ struct SetGameView: View {
     }
     
     @ViewBuilder
-    func GameButton(text: String, action: @escaping () -> Void, height: CGFloat) -> some View {
+    private func GameButton(text: String, action: @escaping () -> Void, height: CGFloat) -> some View {
         Button(action:
             action
         ) {
@@ -170,6 +158,17 @@ struct SetGameView: View {
                 setGame.deal(numCards: 1)
             }
         }
+    }
+    
+    private func randomLocationOffScreen(for size: CGSize) -> CGSize {
+        var randomSize = CGSize.zero
+        let randomAngle = Double.random(in: 0..<Double.pi * 2)
+        let scaleFactor = max(size.width, size.height) * 1.5
+        
+        randomSize.width = CGFloat(sin(randomAngle)) * scaleFactor
+        randomSize.height = CGFloat(cos(randomAngle)) * scaleFactor
+        
+        return randomSize
     }
     
     private func columns(for size: CGSize) -> [GridItem] {
@@ -220,25 +219,18 @@ struct SetGameView: View {
     private let backgroundColor = Color.blue
     private let backgroundOpacity = 0.3
     
-    private let sectionColor = Color.blue
-    private let sectionOpacity = 0.1
-    
     private let playgroundColor = Color.blue
     private let playgroundOpacity = 0.1
     
     private let sectionFactor: CGFloat = 1/12
     private let sectionFactorSmall: CGFloat = 1/18
-    private let playgroundFactor: CGFloat = 1/2
     private let paddingFactorLarge: CGFloat = 1/100
     private let paddingFactor: CGFloat = 1/20
     private let spacingFactor: CGFloat = 1/75
-    private let spacingBottomFactor: CGFloat = 1/25000
-    
 }
 
 struct SetGameView_Previews: PreviewProvider {
     static var previews: some View {
         SetGameView(setGame: SetGameVM())
-//            .previewLayout(PreviewLayout.fixed(width: 820, height: 414))
     }
 }

@@ -8,15 +8,16 @@
 import Foundation
 
 struct SetGame {
-    var cards: Array<Card>
-    var cardsInPlay: Array<Card>
-    var score: Int
-    var selectedNum: Int
-    var isMatch: Bool?
-    var gameOver: Bool
+    private(set) var cards: Array<Card>
+    private(set) var cardsInPlay: Array<Card>
+    private(set) var score: Int
+    private(set) var gameOver: Bool
     
-    let defaultDealNum = 12
-    let maxSelectNum = 3
+    private var selectedNum: Int
+    private var isMatch: Bool?
+    
+    private let defaultDealNum = 12
+    private let maxSelectNum = 3
     
     init() {
         cards = SetGame.createSetCards()
@@ -41,7 +42,7 @@ struct SetGame {
         return cards.shuffled()
     }
     
-    mutating func removeSelected() {
+    private mutating func removeSelected() {
         var deckCount = cards.count
         var deckIndex = 0
         let currentSelected = findSelected(sorted: false)
@@ -60,6 +61,84 @@ struct SetGame {
             
         }
     }
+    
+    private mutating func checkGameOver() {
+        if cards.count == 0 && getSets().count == 0 {
+            gameOver = true
+        }
+    }
+    
+    private mutating func resetSelected() {
+        isMatch = nil
+        for index in findSelected() {
+            cardsInPlay[index].isSelected = false
+            cardsInPlay[index].isMatched = nil
+        }
+        selectedNum = 0
+    }
+    
+    private func checkMatch(withIndices indices: Array<Int>) -> Bool {
+        let cardA = cardsInPlay[indices[0]]
+        let cardB = cardsInPlay[indices[1]]
+        let cardC = cardsInPlay[indices[2]]
+
+        if hasMatchingAttribute(attA: cardA.color.rawValue, attB: cardB.color.rawValue, attC: cardC.color.rawValue)
+        && hasMatchingAttribute(attA: cardA.pattern.rawValue, attB: cardB.pattern.rawValue, attC: cardC.pattern.rawValue)
+        && hasMatchingAttribute(attA: cardA.shape.rawValue, attB: cardB.shape.rawValue, attC: cardC.shape.rawValue)
+            && hasMatchingAttribute(attA: cardA.number, attB: cardB.number, attC: cardC.number) {
+            return true
+        }
+        return false
+    }
+    
+    // if sorted, returns from greatest index to smallest
+    private func findSelected(sorted: Bool = true) -> Array<Int> {
+        var selectedIndices = Array<Int>()
+        for (index, card) in cardsInPlay.enumerated() {
+            if card.isSelected {
+                selectedIndices.append(index)
+            }
+        }
+        return sorted ? selectedIndices.sorted { (A, B) -> Bool in
+            A > B
+        } : selectedIndices
+    }
+    
+    private mutating func setIsMatched() {
+        for selectedIndex in findSelected() {
+            cardsInPlay[selectedIndex].isMatched = isMatch
+        }
+    }
+    
+    private func hasMatchingAttribute(attA: Int, attB: Int, attC: Int) -> Bool {
+        if (attA == attB && attB == attC) || (attA != attB && attA != attC && attB != attC) {
+            return true
+        }
+        return false
+    }
+    
+    private func getSets() -> Array<Array<Int>> {
+        var sets = Array<Array<Int>>()
+        
+        for indexA in 0..<cardsInPlay.count {
+            for indexB in indexA + 1..<cardsInPlay.count {
+                for indexC in indexB + 1..<cardsInPlay.count {
+                    if checkMatch(withIndices: [indexA, indexB, indexC]) {
+                        sets.append([indexA, indexB, indexC])
+                    }
+                }
+            }
+        }
+        return sets
+    }
+    
+    private mutating func stopCheating() {
+        for (index, _) in cardsInPlay.enumerated() {
+            cardsInPlay[index].cheat = false
+        }
+    }
+    
+    // MARK: - Called by View Model
     
     // user loses points for how many sets existed when he asked for more cards
     mutating func dealCardsPenalty() {
@@ -90,12 +169,17 @@ struct SetGame {
         cards = Array(cards[cardNum...])
     }
     
-    mutating func checkGameOver() {
-        if cards.count == 0 && getSets().count == 0 {
-            gameOver = true
+    mutating func checkMatch() {
+        if checkMatch(withIndices: findSelected()) {
+            score += 1
+            isMatch = true
         }
+        else {
+            score -= 1
+            isMatch = false
+        }
+        setIsMatched()
     }
-    
     
     mutating func selectCard(at index: Int) {
         var selectIndex = index
@@ -135,82 +219,6 @@ struct SetGame {
         }
     }
     
-    mutating func resetSelected() {
-        isMatch = nil
-        for index in findSelected() {
-            cardsInPlay[index].isSelected = false
-            cardsInPlay[index].isMatched = nil
-        }
-        selectedNum = 0
-    }
-    
-    func checkMatch(withIndices indices: Array<Int>) -> Bool {
-        let cardA = cardsInPlay[indices[0]]
-        let cardB = cardsInPlay[indices[1]]
-        let cardC = cardsInPlay[indices[2]]
-
-        if hasMatchingAttribute(attA: cardA.color.rawValue, attB: cardB.color.rawValue, attC: cardC.color.rawValue)
-        && hasMatchingAttribute(attA: cardA.pattern.rawValue, attB: cardB.pattern.rawValue, attC: cardC.pattern.rawValue)
-        && hasMatchingAttribute(attA: cardA.shape.rawValue, attB: cardB.shape.rawValue, attC: cardC.shape.rawValue)
-            && hasMatchingAttribute(attA: cardA.number, attB: cardB.number, attC: cardC.number) {
-            return true
-        }
-        return false
-    }
-    
-    // if sorted, returns from greatest index to smallest
-    func findSelected(sorted: Bool = true) -> Array<Int> {
-        var selectedIndices = Array<Int>()
-        for (index, card) in cardsInPlay.enumerated() {
-            if card.isSelected {
-                selectedIndices.append(index)
-            }
-        }
-        return sorted ? selectedIndices.sorted { (A, B) -> Bool in
-            A > B
-        } : selectedIndices
-    }
-    
-    mutating func checkMatch() {
-        if checkMatch(withIndices: findSelected()) {
-            score += 1
-            isMatch = true
-        }
-        else {
-            score -= 1
-            isMatch = false
-        }
-        setIsMatched()
-    }
-    
-    mutating func setIsMatched() {
-        for selectedIndex in findSelected() {
-            cardsInPlay[selectedIndex].isMatched = isMatch
-        }
-    }
-    
-    func hasMatchingAttribute(attA: Int, attB: Int, attC: Int) -> Bool {
-        if (attA == attB && attB == attC) || (attA != attB && attA != attC && attB != attC) {
-            return true
-        }
-        return false
-    }
-    
-    func getSets() -> Array<Array<Int>> {
-        var sets = Array<Array<Int>>()
-        
-        for indexA in 0..<cardsInPlay.count {
-            for indexB in indexA + 1..<cardsInPlay.count {
-                for indexC in indexB + 1..<cardsInPlay.count {
-                    if checkMatch(withIndices: [indexA, indexB, indexC]) {
-                        sets.append([indexA, indexB, indexC])
-                    }
-                }
-            }
-        }
-        return sets
-    }
-    
     mutating func cheat() {
         score -= 1
         let sets = getSets()
@@ -218,12 +226,6 @@ struct SetGame {
             for index in sets[0] {
                 cardsInPlay[index].cheat = true
             }
-        }
-    }
-    
-    mutating func stopCheating() {
-        for (index, _) in cardsInPlay.enumerated() {
-            cardsInPlay[index].cheat = false
         }
     }
 }

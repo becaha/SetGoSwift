@@ -13,10 +13,9 @@ struct Card: Identifiable {
     var pattern: PatternProp
     var number: Int
     var isSelected: Bool
-    var isMatched: Bool?
-    var inPlay: Bool
-    var cheat: Bool?
     var id: UUID
+    var isMatched: Bool?
+    var cheat: Bool?
     
     init(color: Int, shape: Int, pattern: Int, number: Int) {
         self.color = ColorProp(rawValue: color)!
@@ -24,7 +23,6 @@ struct Card: Identifiable {
         self.pattern = PatternProp(rawValue: pattern)!
         self.number = number
         isSelected = false
-        inPlay = false
         id = UUID()
     }
 }

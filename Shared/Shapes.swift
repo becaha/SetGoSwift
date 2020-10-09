@@ -54,7 +54,7 @@ struct SquiggleShape: Shape {
         path.addCurve(to: CGPoint(x: 471, y: 584), control1: CGPoint(x: 300, y: 1078), control2: CGPoint(x: 551, y: 851))
 
         path.addCurve(to: CGPoint(x: 461, y: 224), control1: CGPoint(x: 444, y: 477), control2: CGPoint(x: 351, y: 376))
-//
+
         path.addCurve(to: CGPoint(x: 331, y: 4), control1: CGPoint(x: 587, y: 50), control2: CGPoint(x: 514, y: 8))
 
         path.addCurve(to: CGPoint(x: 51, y: 314), control1: CGPoint(x: 151, y: 0), control2: CGPoint(x: 28, y: 145))
@@ -77,16 +77,14 @@ struct SquiggleShape: Shape {
 struct Shape_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
-//            DiamondShape().background(Color.red)
-//            SquiggleShape().background(Color.green)
-            OvalShape().background(Color.yellow)
+            DiamondShape().background(Color.red)
                 .aspectRatio(1/2, contentMode: .fit)
 
-            Circle().background(Color.purple)
-                .aspectRatio(3/5, contentMode: .fit)
+            SquiggleShape().background(Color.green)
+                .aspectRatio(1/2, contentMode: .fit)
 
+            OvalShape().background(Color.yellow)
+                .aspectRatio(1/2, contentMode: .fit)
         }
-        .background(Color.blue)
-        
     }
 }

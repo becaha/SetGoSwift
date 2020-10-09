@@ -22,8 +22,13 @@ struct ShapeView<T: Shape>: View {
             .foregroundColor(color)
             .aspectRatio(contentMode: .fit)
         }
-        .frame(width: width/3, height: width * 2 / 3)
+        .frame(width: width / maxNumShapes,
+               height: width * inverseCardRatio)
     }
+    
+    // MARK: - Drawing constants
+    private let maxNumShapes: CGFloat = 3
+    private let inverseCardRatio: CGFloat = 2/3
 }
 
 struct ShapeView_Previews: PreviewProvider {
@@ -32,7 +37,6 @@ struct ShapeView_Previews: PreviewProvider {
             HStack {
                 ShapeView(width: 50.0, color: Color.red, opacity: 0, shape: SquiggleShape())
                 ShapeView(width: 50.0, color: Color.red, opacity: 0, shape: SquiggleShape())
-//                ShapeView(width: 100.0, color: Color.red, opacity: 0, shape: SquiggleShape())
             }
         }
         .padding()
