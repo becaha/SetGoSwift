@@ -17,15 +17,3 @@ extension Array where Element: Identifiable {
         return nil
     }
 }
-
-extension Array where Element: Equatable {
-    mutating func remove(element: Element) -> Bool {
-        for index in 0..<self.count {
-            if self[index] == element {
-                self.remove(at: index)
-                return true
-            }
-        }
-        return false
-    }
-}
